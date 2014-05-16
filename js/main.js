@@ -31,8 +31,8 @@ var spartan = {};
     spartan.uploadImage = function(){
         $('#notice').text('Digesting..').fadeIn();
 
-        $('#upload_iframe').unbind().load(function(){
-            var img = $('#upload_iframe').contents().find('body').html();
+        //$('#upload_iframe').unbind().load(function(){
+            var img = '/img/image.png';//$('#upload_iframe').contents().find('body').html();
 
             if(img.indexOf('uperror') < 0){
                 $('#image_upload_form').hide();
@@ -94,7 +94,9 @@ var spartan = {};
             // we have to remove the values
             $('#image_crop_form').find('.width, .height, .x1, .y1').val('');
             $('#image_upload_form').find('#file').val('');
-        });
+        //});
+
+        return false;
     };
 
     spartan.dragImage = function(evt){
