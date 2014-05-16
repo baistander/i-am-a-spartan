@@ -1,8 +1,7 @@
 var spartan = {};
 
 (function($){
-    var imgWidth = 500,
-        imgHeight = 500;
+    var imgWidth, imgHeight;
 
     spartan.init = function(){
         spartan.image = $('.cropper');
@@ -10,19 +9,18 @@ var spartan = {};
         $('#image_upload_form').submit(spartan.uploadImage);
         $('#image_crop_form').submit(spartan.cropImage);
 
-        var container = $('.container').get(0);
+        var container = $('.image-border').get(0);
         var hammer = Hammer(container, {
             swipe: false,
-            hold: false,
-            gesture: true
+            hold: false
         }).on('drag', spartan.dragImage);
 
         hammer.on('release', spartan.releaseImage);
-        hammer.on('pinchout', spartan.zoomIn);
-        hammer.on('pinchin', spartan.zoomOut);
-        hammer.on('pinch', function(evt){
-            console.log(evt, 'pinch')
-        });
+        // hammer.on('pinchout', spartan.zoomIn);
+        // hammer.on('pinchin', spartan.zoomOut);
+        // hammer.on('pinch', function(evt){
+        //     console.log(evt, 'pinch')
+        // });
 
         $('.zoomIn').on('click', spartan.zoomIn);
         $('.zoomOut').on('click', spartan.zoomOut);
@@ -31,9 +29,9 @@ var spartan = {};
     spartan.uploadImage = function(){
         $('#notice').text('Digesting..').fadeIn();
 
-        //$('#upload_iframe').unbind().load(function(){
-            var img = '/img/image.png';//$('#upload_iframe').contents().find('body').html();
-
+        $('#upload_iframe').unbind().load(function(){
+            var img = $('#upload_iframe').contents().find('body').html();
+            
             if(img.indexOf('uperror') < 0){
                 $('#image_upload_form').hide();
                 $('#image_crop_form').show().find('.img_src').attr('value', img);
@@ -43,9 +41,7 @@ var spartan = {};
                 spartan.image.css({width: '', height: '', marginLeft: '', marginTop: ''});
                 spartan.image.attr('src', img).unbind().load(function(){
                     var $this = $(this).show(),
-                        $parent = $this.parent(),
-                        parentWidth = $parent.width(),
-                        parentHeight = $parent.height();
+                        $parent = $this.parent();
 
                     var height = $this.height(),
                         width = $this.width(),
@@ -53,12 +49,15 @@ var spartan = {};
                         data = {},
                         aspectRatio = 1;
 
+                    imgWidth = $parent.width();
+                    imgHeight = $parent.height();
+
                     spartan.originalHeight = height;
                     spartan.originalWidth = width;
                     spartan.imageRatio = ratio;
 
                     if(ratio < aspectRatio) {
-                        var newWidth = parentWidth*1.1;
+                        var newWidth = imgWidth*1.1;
 
                         $this.width(newWidth).css({
                             marginLeft : -newWidth * 0.05,
@@ -68,7 +67,7 @@ var spartan = {};
                         spartan.imageWidth = newWidth;
                         spartan.imageHeight = newWidth*aspectRatio/ratio;
                     } else {
-                        var newHeight = parentHeight*1.1;
+                        var newHeight = imgHeight*1.1;
 
                         $this.height(newHeight).css({
                             marginTop : -newHeight * 0.05,
@@ -94,9 +93,7 @@ var spartan = {};
             // we have to remove the values
             $('#image_crop_form').find('.width, .height, .x1, .y1').val('');
             $('#image_upload_form').find('#file').val('');
-        //});
-
-        return false;
+        });
     };
 
     spartan.dragImage = function(evt){
@@ -126,8 +123,6 @@ var spartan = {};
     };
 
     spartan.zoomIn = function(evt){
-        console.log(evt);
-
         var scale = (evt.gesture && evt.gesture.scale ? evt.gesture.scale : 1.05);
 
         spartan.imageHeight = spartan.image.height()*scale;
@@ -137,13 +132,9 @@ var spartan = {};
             height: spartan.imageHeight,
             width: spartan.imageWidth
         });
-
-        //evt.stopPropagation();
     };
 
     spartan.zoomOut = function(evt){
-        console.log(evt);
-
         var scale = (evt.gesture && evt.gesture.scale ? evt.gesture.scale : 1.05);
 
         spartan.imageHeight = Math.max(spartan.image.height()/scale, imgHeight);
@@ -169,8 +160,6 @@ var spartan = {};
             marginLeft: Math.min(Math.max(marginLeft, minX), maxX),
             marginTop: Math.min(Math.max(marginTop, minY), maxY)
         });
-
-        //evt.stopPropagation();
     };
 
     spartan.cropImage = function(){
