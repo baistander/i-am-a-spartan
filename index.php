@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/cropper.css">
+        <link rel="stylesheet" href="css/styles.css">
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 9]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="container">
+            <div class="image-container">
+                <img class="cropper" src="" />
+                <img class="cropped-image" src="" />
+            </div>
+            <div class="background background-top"></div>
+            <div class="background background-left"></div>
+            <div class="background background-right"></div>
+            <div class="background background-bottom"></div>
+            <div class="image-border"></div>
+            <div class="controls">
+                <div class="zoomIn">+</div>
+                <div class="zoomOut">-</div>
+            </div>
+        </div>
+
+        <div id="image_upload">
+            <form name="image_upload_form" id="image_upload_form"  method="post" enctype="multipart/form-data" action="upload.php?act=image" target="upload_iframe">
+              <label for="photo">1. Upload An Image : <input name="photo" id="file" class="file" size="27" type="file" /></label>         
+              <input type="hidden" name="height" value="500" class="height" />
+              <input type="hidden" name="width" value="500" class="width" />
+              <input type="submit" name="action" value="Upload" />
+            </form>
+        </div>
+
+        <div id="notice" class="notice">Digesting..</div>
+
+        <div id="image_crop" class="image_crop">
+            <form name="image_crop_form" id="image_crop_form" method="post" action="upload.php?act=crop" target="upload_iframe">
+                <input type="hidden" name="img_src" id="img_src" class="img_src" /> 
+                <input type="hidden" name="height" value="0" class="height" />
+                <input type="hidden" name="width" value="0" class="width" />
+                <input type="hidden" id="y1" class="y1" name="y" />
+                <input type="hidden" id="x1" class="x1" name="x" />
+                <input type="hidden" id="y2" class="y2" name="y1" />
+                <input type="hidden" id="x2" class="x2" name="x1" />                         
+                <input type="submit" value="finished" />
+            </form>
+        </div>
+
+        <iframe id="upload_iframe" class="upload_iframe" name="upload_iframe" src=""></iframe>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>
+    </body>
+</html>
