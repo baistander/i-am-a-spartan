@@ -74,12 +74,7 @@ function writeImg($arr){
 	exit;
 }
 
-function asidoImg($arr){
-	include('asido/class.asido.php');
-
-	$asido = new asido;
-	$asido->driver('gd');
-	
+function asidoImg($arr){	
 	$height		= $arr['height'];
 	$width		= $arr['width'];
 	$x			= $arr['x'];
