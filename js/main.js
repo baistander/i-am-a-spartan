@@ -8,6 +8,7 @@ var spartan = {};
 
         $('#image_upload_form').submit(spartan.uploadImage);
         $('#image_crop_form').submit(spartan.cropImage);
+        $('#write_image_form').submit(spartan.writeImage);
 
         var container = $('.image-border').get(0);
         var hammer = Hammer(container, {
@@ -15,6 +16,7 @@ var spartan = {};
             hold: false
         }).on('drag', spartan.dragImage);
 
+        hammer.on('touch', spartan.selectImage);
         hammer.on('release', spartan.releaseImage);
         // hammer.on('pinchout', spartan.zoomIn);
         // hammer.on('pinchin', spartan.zoomOut);
@@ -24,16 +26,29 @@ var spartan = {};
 
         $('.zoomIn').on('click', spartan.zoomIn);
         $('.zoomOut').on('click', spartan.zoomOut);
+
+        $('.sub-container').on('touchstart touchmove touchend', function(){
+            return false;
+        });
+
+        $('#file').change(function() { 
+            $('#image_upload_form').submit(); 
+        });
+    };
+
+    spartan.selectImage = function(){
+        if($(this).hasClass('upload')){
+            $('#file').click();
+        }
     };
 
     spartan.uploadImage = function(){
-        $('#notice').text('Digesting..').fadeIn();
+        $('.image-border').removeClass('upload').html('Uploading...');
 
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
             
             if(img.indexOf('uperror') < 0){
-                $('#image_upload_form').hide();
                 $('#image_crop_form').show().find('.img_src').attr('value', img);
 
                 $('.cropped-image').hide();
@@ -81,45 +96,48 @@ var spartan = {};
                     $this.css({ top: '', left: '' });
                     $('.controls').show();
                 });
+
+                $('.image-border').addClass('crop').html('Crop');
             }
             else{
                 // error output
-                $('#image_upload_form').show();
+                $('.image-border').addClass('upload').html('Click to Upload');
                 $('#image_crop_form').hide();      
             }
             
-            $('#notice').fadeOut();                 
-            
             // we have to remove the values
-            $('#image_crop_form').find('.width, .height, .x1, .y1').val('');
             $('#image_upload_form').find('#file').val('');
         });
     };
 
     spartan.dragImage = function(evt){
-        var params = evt.gesture;
+        if($(this).hasClass('crop')){
+            var params = evt.gesture;
 
-        var marginLeft = parseInt(spartan.image.css('marginLeft'), 10);
-        var minX = -(spartan.imageWidth-imgWidth)-marginLeft;
-        var maxX = -marginLeft;
+            var marginLeft = parseInt(spartan.image.css('marginLeft'), 10);
+            var minX = -(spartan.imageWidth-imgWidth)-marginLeft;
+            var maxX = -marginLeft;
 
-        var marginTop = parseInt(spartan.image.css('marginTop'), 10);
-        var minY = -(spartan.imageHeight-imgHeight)-marginTop;
-        var maxY = -marginTop;
+            var marginTop = parseInt(spartan.image.css('marginTop'), 10);
+            var minY = -(spartan.imageHeight-imgHeight)-marginTop;
+            var maxY = -marginTop;
 
-        spartan.image.css({
-            left: Math.min(Math.max(params.deltaX, minX), maxX),
-            top: Math.min(Math.max(params.deltaY, minY), maxY)
-        });
+            spartan.image.css({
+                left: Math.min(Math.max(params.deltaX, minX), maxX),
+                top: Math.min(Math.max(params.deltaY, minY), maxY)
+            });
+        }
     };
 
     spartan.releaseImage = function(evt){
-        spartan.image.css({
-            marginLeft: '+=' + parseInt(spartan.image.css('left'), 10),
-            marginTop: '+=' + parseInt(spartan.image.css('top'), 10),
-            top: '',
-            left: ''
-        })
+        if($(this).hasClass('crop')){
+            spartan.image.css({
+                marginLeft: '+=' + parseInt(spartan.image.css('left'), 10),
+                marginTop: '+=' + parseInt(spartan.image.css('top'), 10),
+                top: '',
+                left: ''
+            });
+        }
     };
 
     spartan.zoomIn = function(evt){
@@ -168,16 +186,18 @@ var spartan = {};
         image_crop_form.find('.x1').val(-parseInt(spartan.image.css('marginLeft'), 10)*scale);
         image_crop_form.find('.y1').val(-parseInt(spartan.image.css('marginTop'), 10)*scale);
         image_crop_form.find('.width').val(imgWidth * scale);
-        image_crop_form.find('.height').val(imgHeight * scale);   
+        image_crop_form.find('.height').val(imgHeight * scale);
 
-        $('#notice').text('Digesting..').fadeIn();
+        image_crop_form.hide();
+        $('.image-border').removeClass('crop');
 
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
 
             if(img.indexOf('uperror') < 0){
-                $('#image_upload_form').show();
-                $('#image_crop_form').hide();
+                $('#write_image_form').show().find('.img_src').attr('value', img);
+                $('.writing-text').show();
+                $('.image-border').html('');
 
                 //done cropping
                 spartan.image.hide();
@@ -187,18 +207,40 @@ var spartan = {};
                     var $this = $(this);
                     $this.show();
                 });
-            }
-            else{
+            } else{
                 // error output
-                $('#image_upload_form').hide();
-                $('#image_crop_form').show();      
-            }
-            
-            $('#notice').fadeOut();                 
+                image_crop_form.show();
+                $('.image-border').addClass('crop');
+            }               
             
             // we have to remove the values
-            $('#image_crop_form').find('.width, .height, .x1, .y1').val('');
-            $('#image_upload_form').find('#file').val('');
+            image_crop_form.find('.width, .height, .x1, .y1').val('');
+        });
+    };
+
+    spartan.writeImage = function(){
+        var image_write_form = $('#write_image_form');
+        image_write_form.find('.text1').val($('.title1').val());
+        image_write_form.find('.text2').val($('.title2').val());
+        image_write_form.hide();
+
+        $('#upload_iframe').unbind().load(function(){
+            var img = $('#upload_iframe').contents().find('body').html();
+
+            if(img.indexOf('uperror') < 0){
+                $('.download-file-container').show();
+                $('.download-file').attr('href', img);
+                $('.download-file img').attr('src', img);
+
+                $('.writing-text').hide();
+                $('.cropped-image').attr('src', img);
+            } else{
+                // error output
+                image_write_form.show();
+            }               
+            
+            // we have to remove the values
+            image_write_form.find('.text1, .text2').val('');
         });
     };
 

@@ -24,31 +24,35 @@
         <![endif]-->
 
         <div class="container">
-            <div class="image-container">
-                <img class="cropper" src="" />
-                <img class="cropped-image" src="" />
-            </div>
             <div class="background background-top"></div>
-            <div class="background background-left"></div>
-            <div class="background background-right"></div>
             <div class="background background-bottom"></div>
-            <div class="image-border"></div>
-            <div class="controls">
-                <div class="zoomIn">+</div>
-                <div class="zoomOut">-</div>
+            <div class="sub-container">
+                <div class="image-container">
+                    <img class="cropper" src="" />
+                    <img class="cropped-image" src="" />
+                </div>
+                <div class="background background-left"></div>
+                <div class="background background-right"></div>
+                <div class="image-border upload">Click to Upload</div>
+                <div class="controls">
+                    <div class="zoomIn">+</div>
+                    <div class="zoomOut">-</div>
+                </div>
+                <div class="writing-text">
+                    <input type="text" class="title1" placeholder="WRITE WHAT YOU" />
+                    <input type="text" class="title2" placeholder="WANT HERE" />
+                </div>
             </div>
         </div>
 
         <div id="image_upload">
             <form name="image_upload_form" id="image_upload_form"  method="post" enctype="multipart/form-data" action="upload.php?act=image" target="upload_iframe">
-              <label for="photo">1. Upload An Image : <input name="photo" id="file" class="file" size="27" type="file" /></label>         
+              <label for="photo"><input name="photo" id="file" class="file" size="27" type="file" /></label>         
               <input type="hidden" name="height" value="500" class="height" />
               <input type="hidden" name="width" value="500" class="width" />
               <input type="submit" name="action" value="Upload" />
             </form>
         </div>
-
-        <div id="notice" class="notice">Digesting..</div>
 
         <div id="image_crop" class="image_crop">
             <form name="image_crop_form" id="image_crop_form" method="post" action="upload.php?act=crop" target="upload_iframe">
@@ -59,8 +63,23 @@
                 <input type="hidden" id="x1" class="x1" name="x" />
                 <input type="hidden" id="y2" class="y2" name="y1" />
                 <input type="hidden" id="x2" class="x2" name="x1" />                         
-                <input type="submit" value="finished" />
+                <input type="submit" value="finish crop" />
             </form>
+        </div>
+
+        <div id="write_image" class="write_image">
+            <form name="write_image_form" id="write_image_form" method="post" action="upload.php?act=write" target="upload_iframe">
+                <input type="hidden" name="img_src" id="img_src" class="img_src" /> 
+                <input type="hidden" name="text1" value="0" class="text1" />
+                <input type="hidden" name="text2" value="0" class="text2" />
+                <input type="submit" value="finish writing text" />
+            </form>
+        </div>
+
+        <div class="download-file-container">
+            <a class="download-file" href="" download="SpartanImage">
+                Download
+            </a>
         </div>
 
         <iframe id="upload_iframe" class="upload_iframe" name="upload_iframe" src=""></iframe>

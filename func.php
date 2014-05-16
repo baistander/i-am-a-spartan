@@ -42,6 +42,7 @@ function uploadImg($arr){
 			// add key value to arr
 			$arr['temp_uploadfile'] = $temp_uploadfile;
 			$arr['new_uploadfile'] = $new_uploadfile;
+			$arr['ext'] = $ext;
 			
 			asidoImg($arr);
 			
@@ -64,6 +65,15 @@ function cropImg($arr){
 	exit;
 }
 
+function writeImg($arr){
+	$date = md5(time());	
+	$arr['temp_uploadfile'] = $arr['img_src'];
+	$arr['new_uploadfile'] = $arr['uploaddir'].strtolower($date).'.jpg';
+	
+	asidoImg($arr);
+	exit;
+}
+
 function asidoImg($arr){
 	include('asido/class.asido.php');
 
@@ -72,32 +82,63 @@ function asidoImg($arr){
 	$height		= $arr['height'];
 	$width		= $arr['width'];
 	$x			= $arr['x'];
-	$y			= $arr['y'];				
-		
-	// process
-	$i1 = asido::image($arr['temp_uploadfile'], $arr['new_uploadfile']);	
+	$y			= $arr['y'];
+
+	if($arr['ext'] == 'png'){
+		$image = imagecreatefrompng($arr['temp_uploadfile']);
+	} elseif($arr['ext'] == 'gif') {
+		$image = imagecreatefromgif($arr['temp_uploadfile']);
+	} else {
+		$image = imagecreatefromjpeg($arr['temp_uploadfile']);
+	}
+
+	$filename = $arr['new_uploadfile'];
 
 	// fit and add white frame										
 	if($arr['crop'] === true){
-		Asido::Crop($i1, $x, $y, $width, $height);
-		//Asido::resize($i1, 1000, 1000);
-		Asido::watermark($i1, 'img/watermark.jpg', ASIDO_WATERMARK_TOP_CENTER, ASIDO_WATERMARK_SCALABLE_DISABLED);
+		$thumb_width = 1000;
+		$thumb_height = 1000;
+
+		$original_aspect = $width / $height;
+		$thumb_aspect = $thumb_width / $thumb_height;
+
+		if ($original_aspect >= $thumb_aspect){
+		   $new_height = $thumb_height;
+		   $new_width = $width / ($height / $thumb_height);
+		} else {
+		   $new_width = $thumb_width;
+		   $new_height = $height / ($width / $thumb_width);
+		}
+
+		$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+
+		// Resize and crop
+		imagecopyresampled($thumb, $image, 0 - ($new_width - $thumb_width) / 2, 0 - ($new_height - $thumb_height) / 2, $x, $y, $new_width, $new_height, $width, $height);
+		imagejpeg($thumb, $filename, 80);
+		imagedestroy($image);
+
+		//Asido::watermark($i1, 'img/watermark.jpg', ASIDO_WATERMARK_TOP_CENTER, ASIDO_WATERMARK_SCALABLE_DISABLED);
+	} elseif($arr['write'] === true){
+	      // Allocate A Color For The Text
+	      $red = imagecolorallocate($image, 255, 0, 0);
+	      $font_path = 'fonts/Arial.ttf';
+
+	      $text1 = imagettfbbox(45, 0, $font_path, $arr['text1']);
+	      $text2 = imagettfbbox(75, 0, $font_path, $arr['text2']);
+
+	      // Print Text On Image
+	      imagettftext($image, 45, 0, ceil((1000-$text1[2])/2), 20+40+24-8, $red, $font_path, $arr['text1']);
+	      imagettftext($image, 75, 0, ceil((1000-$text2[2])/2), 80+60+30+4, $red, $font_path, $arr['text2']);
+	      imagejpeg($image, $filename, 80);
+	      imagedestroy($image);
 	} else{
-		// Asido::Fit($i1, $width, $height);
-		// Asido::resize($i1, $width, $height);
+		imagejpeg($image, $filename, 80);
+		imagedestroy($image);
 	}
-
-	// always convert to jpg	
-	Asido::convert($i1, 'image/jpg');
-
-	$i1->Save(ASIDO_OVERWRITE_ENABLED);
-	$data = array(
-		'photo'=> $arr['new_uploadfile']
-	);
 	
 	// echo $user_id;
 	// delete old file
-	echo $data['photo'];	
+	echo $filename;
 }
 
 ?>
