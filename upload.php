@@ -26,14 +26,15 @@
 
 		cropImg($arr);
 		exit;
-	} elseif($_GET['act'] == 'write'){
+	} elseif($_GET['act'] == 'erase'){
 		$arr = array(
-			'uploaddir' 	=> 'uploads/',
+			'uploaddir' 	=> 'uploads/erase/',
 			'tempdir'		=> 'uploads/temp/',
 			'text1'			=> strtoupper($_POST['text1']),
 			'text2'			=> strtoupper($_POST['text2']),
+			'values'		=> strtoupper($_POST['values']),
 			'img_src'		=> $_POST['img_src'],
-			'write'			=> true
+			'erase'			=> true
 		);
 
 		writeImg($arr);

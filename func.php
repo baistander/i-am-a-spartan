@@ -75,26 +75,30 @@ function writeImg($arr){
 }
 
 function asidoImg($arr){	
-	$height		= $arr['height'];
-	$width		= $arr['width'];
-	$x			= $arr['x'];
-	$y			= $arr['y'];
+	if(isset($arr['height'])){
+		$height		= $arr['height'];
+		$width		= $arr['width'];
+	}
 
-	if($arr['ext'] == 'png'){
+	if(isset($arr['x'])){
+		$x			= $arr['x'];
+		$y			= $arr['y'];
+	}
+
+	if(isset($arr['ext']) && $arr['ext'] == 'png'){
 		$image = imagecreatefrompng($arr['temp_uploadfile']);
-	} elseif($arr['ext'] == 'gif') {
+	} elseif(isset($arr['ext']) && $arr['ext'] == 'gif') {
 		$image = imagecreatefromgif($arr['temp_uploadfile']);
 	} else {
 		$image = imagecreatefromjpeg($arr['temp_uploadfile']);
 	}
 
 	$filename = $arr['new_uploadfile'];
+	$thumb_width = 1000;
+	$thumb_height = 1000;
 
 	// fit and add white frame										
-	if($arr['crop'] === true){
-		$thumb_width = 1000;
-		$thumb_height = 1000;
-
+	if(isset($arr['crop']) && $arr['crop'] === true){
 		$original_aspect = $width / $height;
 		$thumb_aspect = $thumb_width / $thumb_height;
 
@@ -112,21 +116,61 @@ function asidoImg($arr){
 		imagecopyresampled($thumb, $image, 0 - ($new_width - $thumb_width) / 2, 0 - ($new_height - $thumb_height) / 2, $x, $y, $new_width, $new_height, $width, $height);
 		imagejpeg($thumb, $filename, 80);
 		imagedestroy($image);
+	} elseif(isset($arr['erase']) && $arr['erase'] === true){
+		$values = json_decode($arr['values']);
+		$data_vals = [];
+	
+		for ($i=0; $i<$thumb_width; $i++) {
+			$data_vals[$i] = [];
+		} 
 
-		//Asido::watermark($i1, 'img/watermark.jpg', ASIDO_WATERMARK_TOP_CENTER, ASIDO_WATERMARK_SCALABLE_DISABLED);
-	} elseif($arr['write'] === true){
-	      // Allocate A Color For The Text
-	      $red = imagecolorallocate($image, 255, 0, 0);
-	      $font_path = 'fonts/Arial.ttf';
+		for ($i=0; $i<count($values); $i++) {
+			$x = $values[$i]->X;
+			$y = $values[$i]->Y;
 
-	      $text1 = imagettfbbox(45, 0, $font_path, $arr['text1']);
-	      $text2 = imagettfbbox(75, 0, $font_path, $arr['text2']);
+			for($j=-15; $j<=15; $j++){
+				for($k=-15; $k<=15; $k++){
+					$dist = sqrt($j*$j+$k*$k);
+					if($dist <= 15){
+						$newX = $x+$j;
+						$newY = $y+$k;
 
-	      // Print Text On Image
-	      imagettftext($image, 45, 0, ceil((1000-$text1[2])/2), 20+40+24-8, $red, $font_path, $arr['text1']);
-	      imagettftext($image, 75, 0, ceil((1000-$text2[2])/2), 80+60+30+4, $red, $font_path, $arr['text2']);
-	      imagejpeg($image, $filename, 80);
-	      imagedestroy($image);
+						if($newX >= 0 && $newX <= $thumb_width && $newY >= 0 && $newY <= $thumb_height){
+							$data_vals[$newX][$newY] = true;
+						}
+					}
+				}	
+			}
+		} 
+
+		// Create new image
+		$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+		imagecopy($thumb, $image, 0, 0, 0, 0, $thumb_width, $thumb_height);
+
+		// Allocate A Color For The Text
+		$red = imagecolorallocate($thumb, 255, 0, 0);
+		$font_path = 'fonts/Arial.ttf';
+
+		$text1 = imagettfbbox(45, 0, $font_path, $arr['text1']);
+		$text2 = imagettfbbox(75, 0, $font_path, $arr['text2']);
+
+		// Print Text On Image
+		imagettftext($thumb, 45, 0, ceil((1000-$text1[2])/2), 20+40+24-8, $red, $font_path, $arr['text1']);
+		imagettftext($thumb, 75, 0, ceil((1000-$text2[2])/2), 80+60+30+4, $red, $font_path, $arr['text2']);
+
+		// Erase part of image
+		$eraseSize = 2;
+
+		for ($i=0; $i<$thumb_width-$eraseSize; $i++) {
+			for($j=0; $j<$thumb_height/5; $j++){
+				if(isset($data_vals[$i][$j])){
+					imagecopy($thumb, $image, $i*2, $j*2, $i*2, $j*2, $eraseSize, $eraseSize);
+				}
+			}
+		}
+
+		imagejpeg($thumb, $filename, 80);
+		imagedestroy($image);
 	} else{
 		imagejpeg($image, $filename, 80);
 		imagedestroy($image);

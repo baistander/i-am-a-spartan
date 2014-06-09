@@ -33,6 +33,7 @@
                 </div>
                 <div class="background background-left"></div>
                 <div class="background background-right"></div>
+                <canvas id="erase_canvas" class="erase_canvas" width="500" height="500"></canvas>
                 <div class="image-border upload">Click to Upload</div>
                 <div class="controls">
                     <div class="zoomIn">+</div>
@@ -42,6 +43,7 @@
                     <input type="text" class="title1" placeholder="WRITE WHAT YOU" />
                     <input type="text" class="title2" placeholder="WANT HERE" />
                 </div>
+                <canvas id="erase_canvas_overlay" class="erase_canvas_overlay" width="500" height="500"></canvas>
             </div>
         </div>
 
@@ -62,7 +64,8 @@
                 <input type="hidden" id="y1" class="y1" name="y" />
                 <input type="hidden" id="x1" class="x1" name="x" />
                 <input type="hidden" id="y2" class="y2" name="y1" />
-                <input type="hidden" id="x2" class="x2" name="x1" />                         
+                <input type="hidden" id="x2" class="x2" name="x1" />
+                <input type="submit" class="cancel" value="cancel crop" />
                 <input type="submit" value="finish crop" />
             </form>
         </div>
@@ -72,12 +75,25 @@
                 <input type="hidden" name="img_src" id="img_src" class="img_src" /> 
                 <input type="hidden" name="text1" value="0" class="text1" />
                 <input type="hidden" name="text2" value="0" class="text2" />
+                <input type="submit" class="cancel" value="cancel writing text" />
                 <input type="submit" value="finish writing text" />
             </form>
         </div>
 
+        <div id="erase_image" class="erase_image">
+            <form name="erase_image_form" id="erase_image_form" method="post" action="upload.php?act=erase" target="upload_iframe">
+                <input type="hidden" name="img_src" id="img_src" class="img_src" /> 
+                <input type="hidden" name="text1" value="0" class="text1" />
+                <input type="hidden" name="text2" value="0" class="text2" />
+                <input type="hidden" name="values" value="0" class="values" />
+                <input type="submit" class="cancel" value="cancel erasing" />
+                <input type="submit" value="finish erasing" />
+            </form>
+        </div>
+
         <div class="download-file-container">
-            <a class="download-file" href="" download="SpartanImage">
+            <a class="start-over" href="#">Start Over</a>
+            <a class="download-file" href="#" download="SpartanImage">
                 Download
             </a>
         </div>

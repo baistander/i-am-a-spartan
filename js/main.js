@@ -7,8 +7,13 @@ var spartan = {};
         spartan.image = $('.cropper');
 
         $('#image_upload_form').submit(spartan.uploadImage);
+        $('#image_crop_form .cancel').on('click', spartan.cancelCropImage);
         $('#image_crop_form').submit(spartan.cropImage);
+        $('#write_image_form .cancel').on('click', spartan.cancelWriteImage);
         $('#write_image_form').submit(spartan.writeImage);
+        $('#erase_image_form .cancel').on('click', spartan.cancelEraseImage);
+        $('#erase_image_form').submit(spartan.eraseImage);
+        $('.start-over').on('click', spartan.startOver);
 
         var container = $('.image-border').get(0);
         var hammer = Hammer(container, {
@@ -18,11 +23,6 @@ var spartan = {};
 
         hammer.on('touch', spartan.selectImage);
         hammer.on('release', spartan.releaseImage);
-        // hammer.on('pinchout', spartan.zoomIn);
-        // hammer.on('pinchin', spartan.zoomOut);
-        // hammer.on('pinch', function(evt){
-        //     console.log(evt, 'pinch')
-        // });
 
         $('.zoomIn').on('click', spartan.zoomIn);
         $('.zoomOut').on('click', spartan.zoomOut);
@@ -34,6 +34,19 @@ var spartan = {};
         $('#file').change(function() { 
             $('#image_upload_form').submit(); 
         });
+
+        spartan.canvas = $('#erase_canvas').get(0);
+        spartan.ctx = spartan.canvas.getContext('2d');
+        //spartan.ctx.globalAlpha = .6;
+        spartan.ctx.fillStyle = '#B71D35';
+
+        spartan.canvasOverlay = $('#erase_canvas_overlay').get(0);
+        spartan.ctxOverlay = spartan.canvasOverlay.getContext('2d');
+        spartan.ctxOverlay.globalAlpha = .6;
+        spartan.ctxOverlay.fillStyle = '#B71D35';
+
+        $('#erase_canvas_overlay').on('mousedown mousemove touchstart touchmove', spartan.erase);
+        $('.container').on('mousemove mouseup', spartan.eraseStop);
     };
 
     spartan.selectImage = function(){
@@ -101,13 +114,22 @@ var spartan = {};
             }
             else{
                 // error output
-                $('.image-border').addClass('upload').html('Click to Upload');
-                $('#image_crop_form').hide();      
+                spartan.cancelCropImage();  
             }
             
             // we have to remove the values
             $('#image_upload_form').find('#file').val('');
         });
+    };
+
+    spartan.cancelCropImage = function(evt){
+        $('.image-border').addClass('upload').html('Click to Upload');
+        $('#image_crop_form').hide()
+        $('.controls').hide();
+
+        spartan.image.hide();
+
+        return false;
     };
 
     spartan.dragImage = function(evt){
@@ -126,6 +148,9 @@ var spartan = {};
                 left: Math.min(Math.max(params.deltaX, minX), maxX),
                 top: Math.min(Math.max(params.deltaY, minY), maxY)
             });
+        //} else if($(this).hasClass('erase')){
+        } else {
+            spartan.erase(evt);
         }
     };
 
@@ -195,7 +220,9 @@ var spartan = {};
             var img = $('#upload_iframe').contents().find('body').html();
 
             if(img.indexOf('uperror') < 0){
-                $('#write_image_form').show().find('.img_src').attr('value', img);
+                $('#erase_image_form').find('.img_src').attr('value', img);
+                $('#write_image_form').show();
+
                 $('.writing-text').show();
                 $('.image-border').html('');
 
@@ -207,22 +234,125 @@ var spartan = {};
                     var $this = $(this);
                     $this.show();
                 });
+
+                // we have to remove the values
+                image_crop_form.find('.width, .height, .x1, .y1').val('');
             } else{
                 // error output
-                image_crop_form.show();
-                $('.image-border').addClass('crop');
+                spartan.cancelWriteImage();
             }               
-            
-            // we have to remove the values
-            image_crop_form.find('.width, .height, .x1, .y1').val('');
         });
+    };
+
+    spartan.cancelWriteImage = function(evt){
+        $('.writing-text').hide().children().val('');
+        $('.cropped-image').hide();
+        $('#write_image_form').hide()
+        $('.image-border').addClass('crop');
+        $('#image_crop_form').show();
+        $('.controls').show();
+
+        spartan.image.show();
+
+        return false;
     };
 
     spartan.writeImage = function(){
         var image_write_form = $('#write_image_form');
-        image_write_form.find('.text1').val($('.title1').val());
-        image_write_form.find('.text2').val($('.title2').val());
+        // image_write_form.find('.text1').val($('.title1').val());
+        // image_write_form.find('.text2').val($('.title2').val());
         image_write_form.hide();
+
+        // $('#upload_iframe').unbind().load(function(){
+        //     var img = $('#upload_iframe').contents().find('body').html();
+
+        //     if(img.indexOf('uperror') < 0){
+        //         $('#erase_image_form').show().find('.img_src').attr('value', img);
+
+        //         spartan.eraseShow();
+        //         spartan.oldImg = $('.cropped-image').attr('src');
+
+        //         $('.writing-text').hide();
+        //         $('.cropped-image').attr('src', img);
+        //     } else{
+        //         // error output
+        //         spartan.cancelEraseImage();
+        //     }               
+            
+        //     // we have to remove the values
+        //     image_write_form.find('.text1, .text2').val('');
+        // });
+
+        spartan.eraseShow();
+
+        return false;
+    };
+
+    spartan.cancelEraseImage = function(evt){
+        $('.writing-text').show();
+        $('#write_image_form').show();
+        $('#erase_image_form').hide();
+        $('#erase_canvas, #erase_canvas_overlay').hide();
+        $('.image-border').html('');
+
+        return false;
+    };
+
+    spartan.eraseShow = function(){
+        spartan.ctx.clearRect(0, 0, spartan.canvas.width, spartan.canvas.height);
+        spartan.ctxOverlay.clearRect(0, 0, spartan.canvasOverlay.width, spartan.canvasOverlay.height);
+
+        $('#erase_image_form').show()
+        $('#erase_canvas, #erase_canvas_overlay').show();
+        $('.image-border').html('Erase');
+        spartan.eraseData = [];
+    };
+
+    spartan.erase = function(evt){
+        var x, y, touch, canvasOffset = $('#erase_canvas_overlay').offset();
+
+        if(evt.type != 'mousemove'){
+            spartan.erasing = true;
+        }
+
+        if(evt.type.indexOf('mouse') >= 0) {
+            x = evt.offsetX;
+            y = evt.offsetY;
+        } else {
+            touch = evt.originalEvent.touches[0];
+            x = touch.pageX - canvasOffset.left;
+            y = touch.pageY - canvasOffset.top;
+        }
+
+        if(spartan.erasing){
+            spartan.ctx.beginPath();
+            spartan.ctx.arc(x, y, 15, 0, Math.PI*2);
+            spartan.ctx.fill();
+
+            spartan.eraseData.push({ x:x, y:y });
+        } 
+
+        if(evt.type == 'mousemove') {
+            spartan.ctxOverlay.clearRect(0, 0, spartan.canvasOverlay.width, spartan.canvasOverlay.height);
+            spartan.ctxOverlay.beginPath();
+            spartan.ctxOverlay.arc(x, y, 15, 0, Math.PI*2);
+            spartan.ctxOverlay.fill();
+        }
+
+        evt.stopPropagation();
+    };
+
+    spartan.eraseStop = function(){
+        spartan.ctxOverlay.clearRect(0, 0, spartan.canvasOverlay.width, spartan.canvasOverlay.height);
+        spartan.erasing = false;
+    };
+
+    spartan.eraseImage = function(){
+        var image_erase_form = $('#erase_image_form');
+        image_erase_form.find('.text1').val($('.title1').val());
+        image_erase_form.find('.text2').val($('.title2').val());
+        image_erase_form.find('.values').val(JSON.stringify(spartan.eraseData));
+        image_erase_form.hide();
 
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
@@ -232,16 +362,26 @@ var spartan = {};
                 $('.download-file').attr('href', img);
                 $('.download-file img').attr('src', img);
 
+                $('#erase_canvas, #erase_canvas_overlay').hide();
                 $('.writing-text').hide();
                 $('.cropped-image').attr('src', img);
             } else{
                 // error output
-                image_write_form.show();
+                image_erase_form.show();
             }               
             
             // we have to remove the values
-            image_write_form.find('.text1, .text2').val('');
+            image_erase_form.find('.values').val('');
         });
+    };
+
+    spartan.startOver = function(){
+        $('.download-file-container').hide();
+
+        spartan.cancelWriteImage();
+        spartan.cancelCropImage();
+
+        return false;
     };
 
     // Start of application
