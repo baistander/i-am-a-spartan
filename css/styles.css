@@ -47,6 +47,7 @@
     position:absolute;
     top:0;
     left:0;
+    -webkit-transform: rotateZ(0);
 }
 
 .image-container .cropped-image{
@@ -188,5 +189,23 @@
 
     .controls{
         margin-left: 25px;
+    }
+
+    .writing-text .title1{
+        font-size:17px;
+        top:6px;
+    }
+
+    .writing-text .title2{
+        font-size:28px;
+        top:22px;
+    }
+
+    .writing-text .title1,
+    .writing-text .title2{
+        padding:0;
+        width:280px;
+        border-radius:0;
+        margin:0;
     }
 }

@@ -118,10 +118,10 @@ function asidoImg($arr){
 		imagedestroy($image);
 	} elseif(isset($arr['erase']) && $arr['erase'] === true){
 		$values = json_decode($arr['values']);
-		$data_vals = [];
+		$data_vals = array();
 	
 		for ($i=0; $i<$thumb_width; $i++) {
-			$data_vals[$i] = [];
+			$data_vals[$i] = array();
 		} 
 
 		for ($i=0; $i<count($values); $i++) {

@@ -33,7 +33,7 @@
                 </div>
                 <div class="background background-left"></div>
                 <div class="background background-right"></div>
-                <canvas id="erase_canvas" class="erase_canvas" width="500" height="500"></canvas>
+                <canvas id="erase_canvas" class="erase_canvas"></canvas>
                 <div class="image-border upload">Click to Upload</div>
                 <div class="controls">
                     <div class="zoomIn">+</div>
@@ -43,7 +43,7 @@
                     <input type="text" class="title1" placeholder="WRITE WHAT YOU" />
                     <input type="text" class="title2" placeholder="WANT HERE" />
                 </div>
-                <canvas id="erase_canvas_overlay" class="erase_canvas_overlay" width="500" height="500"></canvas>
+                <canvas id="erase_canvas_overlay" class="erase_canvas_overlay"></canvas>
             </div>
         </div>
 
