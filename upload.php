@@ -31,7 +31,6 @@
 			'uploaddir' 	=> 'uploads/erase/',
 			'tempdir'		=> 'uploads/temp/',
 			'text1'			=> strtoupper($_POST['text1']),
-			'text2'			=> strtoupper($_POST['text2']),
 			'values'		=> strtoupper($_POST['values']),
 			'img_src'		=> $_POST['img_src'],
 			'erase'			=> true

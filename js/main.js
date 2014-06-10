@@ -6,14 +6,19 @@ var spartan = {};
     spartan.init = function(){
         spartan.image = $('.cropper');
 
+        $('.instruction1 .cta').on('click', spartan.selectImage);
         $('#image_upload_form').submit(spartan.uploadImage);
-        $('#image_crop_form .cancel').on('click', spartan.cancelCropImage);
+
+        $('.instruction2 .cancel').on('click', spartan.cancelCropImage);
+        $('.instruction2 .next').on('click', function(){ $('#image_crop_form').submit(); });
         $('#image_crop_form').submit(spartan.cropImage);
-        $('#write_image_form .cancel').on('click', spartan.cancelWriteImage);
-        $('#write_image_form').submit(spartan.writeImage);
-        $('#erase_image_form .cancel').on('click', spartan.cancelEraseImage);
+
+        $('.instruction3 .cancel').on('click', spartan.cancelWriteImage);
+        $('.instruction3 .next').on('click', spartan.writeImage);
+
+        $('.instruction4 .cancel').on('click', spartan.cancelEraseImage);
+        $('.instruction4 .next').on('click', function(){ $('#erase_image_form').submit(); });
         $('#erase_image_form').submit(spartan.eraseImage);
-        $('.start-over').on('click', spartan.startOver);
 
         var container = $('.image-border').get(0);
         var hammer = Hammer(container, {
@@ -21,7 +26,6 @@ var spartan = {};
             hold: false
         }).on('drag', spartan.dragImage);
 
-        hammer.on('touch', spartan.selectImage);
         hammer.on('release', spartan.releaseImage);
 
         $('.zoomIn').on('click', spartan.zoomIn);
@@ -53,20 +57,16 @@ var spartan = {};
     };
 
     spartan.selectImage = function(){
-        if($(this).hasClass('upload')){
-            $('#file').click();
-        }
+        $('#file').click();
     };
 
     spartan.uploadImage = function(){
-        $('.image-border').removeClass('upload').html('Uploading...');
-
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
             
             if(img.indexOf('uperror') < 0){
-                $('#image_crop_form').show().find('.img_src').attr('value', img);
-
+                $('#image_crop_form').find('.img_src').attr('value', img);
+                $('.instruction2').show().siblings().hide();
                 $('.cropped-image').hide();
 
                 spartan.image.css({width: '', height: '', marginLeft: '', marginTop: ''});
@@ -79,6 +79,9 @@ var spartan = {};
                         ratio = width / height,
                         data = {},
                         aspectRatio = 1;
+
+                    $('.overlay').show();
+                    $('.image-overlay').show();
 
                     imgWidth = $parent.width();
                     imgHeight = $parent.height();
@@ -113,22 +116,24 @@ var spartan = {};
                     $('.controls').show();
                 });
 
-                $('.image-border').addClass('crop').html('Crop');
+                $('.image-border').addClass('crop');
             }
             else{
                 // error output
                 spartan.cancelCropImage();  
             }
             
-            // we have to remove the values
             $('#image_upload_form').find('#file').val('');
         });
     };
 
     spartan.cancelCropImage = function(evt){
-        $('.image-border').addClass('upload').html('Click to Upload');
-        $('#image_crop_form').hide()
+        $('.image-border').removeClass('crop');
+        $('.instruction1').show().siblings().hide();
         $('.controls').hide();
+        $('.overlay').hide();
+        $('.image-overlay').hide();
+
 
         spartan.image.hide();
 
@@ -151,9 +156,6 @@ var spartan = {};
                 left: Math.min(Math.max(params.deltaX, minX), maxX),
                 top: Math.min(Math.max(params.deltaY, minY), maxY)
             });
-        //} else if($(this).hasClass('erase')){
-        } else {
-            spartan.erase(evt);
         }
     };
 
@@ -216,7 +218,6 @@ var spartan = {};
         image_crop_form.find('.width').val(imgWidth * scale);
         image_crop_form.find('.height').val(imgHeight * scale);
 
-        image_crop_form.hide();
         $('.image-border').removeClass('crop');
 
         $('#upload_iframe').unbind().load(function(){
@@ -224,16 +225,17 @@ var spartan = {};
 
             if(img.indexOf('uperror') < 0){
                 $('#erase_image_form').find('.img_src').attr('value', img);
-                $('#write_image_form').show();
-
-                $('.writing-text').show();
-                $('.image-border').html('');
+                $('.instruction3').show().siblings().hide();
 
                 //done cropping
-                spartan.image.hide();
                 $('.controls').hide();
 
                 $('.cropped-image').attr('src', img).unbind().load(function(){
+                    $('.writing-text').show();
+                    $('.overlay').hide();
+                    spartan.image.hide();
+                    $('.image-overlay').hide();
+
                     var $this = $(this);
                     $this.show();
                 });
@@ -250,10 +252,10 @@ var spartan = {};
     spartan.cancelWriteImage = function(evt){
         $('.writing-text').hide().children().val('');
         $('.cropped-image').hide();
-        $('#write_image_form').hide()
         $('.image-border').addClass('crop');
-        $('#image_crop_form').show();
         $('.controls').show();
+        $('.instruction2').show().siblings().hide();
+        $('.image-overlay').show();
 
         spartan.image.show();
 
@@ -261,7 +263,6 @@ var spartan = {};
     };
 
     spartan.writeImage = function(){
-        $('#write_image_form').hide();
         spartan.eraseShow();
 
         return false;
@@ -269,10 +270,8 @@ var spartan = {};
 
     spartan.cancelEraseImage = function(evt){
         $('.writing-text').show();
-        $('#write_image_form').show();
-        $('#erase_image_form').hide();
         $('#erase_canvas, #erase_canvas_overlay').hide();
-        $('.image-border').html('');
+        $('.instruction3').show().siblings().hide();
 
         return false;
     };
@@ -291,9 +290,8 @@ var spartan = {};
         spartan.ctx.clearRect(0, 0, spartan.canvas.width, spartan.canvas.height);
         spartan.ctxOverlay.clearRect(0, 0, spartan.canvasOverlay.width, spartan.canvasOverlay.height);
 
-        $('#erase_image_form').show()
+        $('.instruction4').show().siblings().hide();
         $('#erase_canvas, #erase_canvas_overlay').show();
-        $('.image-border').html('Erase');
         spartan.eraseData = [];
     };
 
@@ -313,7 +311,7 @@ var spartan = {};
             y = touch.pageY - canvasOffset.top;
         }
 
-        var ratio = 500/spartan.canvas.width;
+        var ratio = 600/spartan.canvas.width;
 
         if(spartan.erasing){
             spartan.ctx.beginPath();
@@ -341,26 +339,22 @@ var spartan = {};
 
     spartan.eraseImage = function(){
         var image_erase_form = $('#erase_image_form');
-        image_erase_form.find('.text1').val($('.title1').val());
-        image_erase_form.find('.text2').val($('.title2').val());
+        image_erase_form.find('.text1').val($('.write1').val());
         image_erase_form.find('.values').val(JSON.stringify(spartan.eraseData));
-        image_erase_form.hide();
 
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
 
             if(img.indexOf('uperror') < 0){
-                $('.download-file-container').show();
-                $('.download-file').attr('href', img);
-                $('.download-file img').attr('src', img);
-
-                $('.image-border').html('');
+                $('.instruction5').show().siblings().hide();
                 $('#erase_canvas, #erase_canvas_overlay').hide();
                 $('.writing-text').hide();
-                $('.cropped-image').attr('src', img);
+                $('.cropped-image').attr('src', img).unbind();
+                $('.download-file').attr('href', img);
+                $('.title').addClass('end');
             } else{
                 // error output
-                image_erase_form.show();
+                $('.instruction4').show().siblings().hide();
             }               
             
             // we have to remove the values
@@ -369,7 +363,7 @@ var spartan = {};
     };
 
     spartan.startOver = function(){
-        $('.download-file-container').hide();
+        $('.title').removeClass('end');
 
         spartan.cancelWriteImage();
         spartan.cancelCropImage();
