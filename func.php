@@ -94,8 +94,8 @@ function asidoImg($arr){
 	}
 
 	$filename = $arr['new_uploadfile'];
-	$thumb_width = 1000;
-	$thumb_height = 1000;
+	$thumb_width = 600;
+	$thumb_height = 600;
 
 	// fit and add white frame										
 	if(isset($arr['crop']) && $arr['crop'] === true){
@@ -111,9 +111,14 @@ function asidoImg($arr){
 		}
 
 		$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+		$overlay = imagecreatefrompng('img/image-overlay.png');
 
 		// Resize and crop
 		imagecopyresampled($thumb, $image, 0 - ($new_width - $thumb_width) / 2, 0 - ($new_height - $thumb_height) / 2, $x, $y, $new_width, $new_height, $width, $height);
+
+		//add overlay
+		imagecopy($thumb, $overlay, 0, 0, 0, 0, $thumb_width, $thumb_height);
+
 		imagejpeg($thumb, $filename, 80);
 		imagedestroy($image);
 	} elseif(isset($arr['erase']) && $arr['erase'] === true){
@@ -148,23 +153,21 @@ function asidoImg($arr){
 		imagecopy($thumb, $image, 0, 0, 0, 0, $thumb_width, $thumb_height);
 
 		// Allocate A Color For The Text
-		$red = imagecolorallocate($thumb, 255, 0, 0);
-		$font_path = 'fonts/Arial.ttf';
+		$white = imagecolorallocate($thumb, 255, 255, 255);
+		$font_path = 'fonts/Veneer.ttf';
 
-		$text1 = imagettfbbox(45, 0, $font_path, $arr['text1']);
-		$text2 = imagettfbbox(75, 0, $font_path, $arr['text2']);
+		//$text1 = imagettfbbox(85, 0, $font_path, $arr['text1']);
 
 		// Print Text On Image
-		imagettftext($thumb, 45, 0, ceil((1000-$text1[2])/2), 20+40+24-8, $red, $font_path, $arr['text1']);
-		imagettftext($thumb, 75, 0, ceil((1000-$text2[2])/2), 80+60+30+4, $red, $font_path, $arr['text2']);
+		imagettftext($thumb, 76, 0, 44, 35+78, $white, $font_path, $arr['text1']);
 
 		// Erase part of image
-		$eraseSize = 2;
+		$eraseSize = 1;
 
 		for ($i=0; $i<$thumb_width-$eraseSize; $i++) {
-			for($j=0; $j<$thumb_height/5; $j++){
+			for($j=0; $j<$thumb_height*2/3; $j++){
 				if(isset($data_vals[$i][$j])){
-					imagecopy($thumb, $image, $i*2, $j*2, $i*2, $j*2, $eraseSize, $eraseSize);
+					imagecopy($thumb, $image, $i, $j, $i, $j, $eraseSize, $eraseSize);
 				}
 			}
 		}
