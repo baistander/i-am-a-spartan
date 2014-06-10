@@ -127,16 +127,18 @@ function asidoImg($arr){
 	
 		for ($i=0; $i<$thumb_width; $i++) {
 			$data_vals[$i] = array();
-		} 
+		}
+
+		$brushSize = 10;
 
 		for ($i=0; $i<count($values); $i++) {
 			$x = $values[$i]->X;
 			$y = $values[$i]->Y;
 
-			for($j=-15; $j<=15; $j++){
-				for($k=-15; $k<=15; $k++){
+			for($j=-$brushSize; $j<=$brushSize; $j++){
+				for($k=-$brushSize; $k<=$brushSize; $k++){
 					$dist = sqrt($j*$j+$k*$k);
-					if($dist <= 15){
+					if($dist <= $brushSize){
 						$newX = $x+$j;
 						$newY = $y+$k;
 
@@ -156,10 +158,52 @@ function asidoImg($arr){
 		$white = imagecolorallocate($thumb, 255, 255, 255);
 		$font_path = 'fonts/Veneer.ttf';
 
-		//$text1 = imagettfbbox(85, 0, $font_path, $arr['text1']);
+		//$text1 = imagettfbbox(76, 0, $font_path, $arr['text1']);
+
+		$texts1 = explode("\n", $arr['text1']);
+		$texts2 = array();
+		$texts2Count = 0;
+
+		for($i=0; $i<count($texts1); $i++){
+			$text = $texts1[$i];
+			$text_data = imagettfbbox(76, 0, $font_path, $text);
+			$split_text = false;
+			$split_index = 0;
+
+			if($text_data[2] > 520){
+				$split_text = true;
+			}
+
+			while($text_data[2] > 520){
+				$space = false;
+				if(strpos($text, ' ')){
+					$split_index = strrpos($text, ' ');
+					$space = true;
+				} else {
+					$split_index = strlen($text)-1;
+				}
+
+				$text = substr($text, 0, $split_index);
+				$text_data = imagettfbbox(76, 0, $font_path, $text);
+
+				if(!$space){
+					$split_index--;
+				}
+			}
+
+			$texts2[$texts2Count] = $text;
+			$texts2Count++;
+
+			if($split_text){
+				$texts1[$i] = substr($texts1[$i], $split_index+1);
+				$i--;
+			}
+		}
 
 		// Print Text On Image
-		imagettftext($thumb, 76, 0, 44, 35+78, $white, $font_path, $arr['text1']);
+		for($i=0; $i<count($texts2); $i++){
+			imagettftext($thumb, 76, 0, 44, 35+78+$i*80, $white, $font_path, $texts2[$i]);
+		}
 
 		// Erase part of image
 		$eraseSize = 1;

@@ -18,6 +18,7 @@ var spartan = {};
 
         $('.instruction4 .cancel').on('click', spartan.cancelEraseImage);
         $('.instruction4 .next').on('click', function(){ $('#erase_image_form').submit(); });
+        $('.instruction4 .clear').on('click', spartan.eraseClear);
         $('#erase_image_form').submit(spartan.eraseImage);
 
         var container = $('.image-border').get(0);
@@ -61,16 +62,22 @@ var spartan = {};
     };
 
     spartan.uploadImage = function(){
+        if(spartan.processing){
+            return;
+        }
+
+        spartan.processing = true;
+
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
             
             if(img.indexOf('uperror') < 0){
                 $('#image_crop_form').find('.img_src').attr('value', img);
-                $('.instruction2').show().siblings().hide();
-                $('.cropped-image').hide();
 
                 spartan.image.css({width: '', height: '', marginLeft: '', marginTop: ''});
                 spartan.image.attr('src', img).unbind().load(function(){
+                    spartan.processing = false;
+
                     var $this = $(this).show(),
                         $parent = $this.parent();
 
@@ -80,6 +87,8 @@ var spartan = {};
                         data = {},
                         aspectRatio = 1;
 
+                    $('.instruction2').show().siblings().hide();
+                    $('.cropped-image').hide();
                     $('.overlay').show();
                     $('.image-overlay').show();
 
@@ -120,7 +129,8 @@ var spartan = {};
             }
             else{
                 // error output
-                spartan.cancelCropImage();  
+                spartan.processing = false;
+                spartan.cancelCropImage();
             }
             
             $('#image_upload_form').find('#file').val('');
@@ -128,12 +138,15 @@ var spartan = {};
     };
 
     spartan.cancelCropImage = function(evt){
+        if(spartan.processing){
+            return false;
+        }
+
         $('.image-border').removeClass('crop');
         $('.instruction1').show().siblings().hide();
         $('.controls').hide();
         $('.overlay').hide();
         $('.image-overlay').hide();
-
 
         spartan.image.hide();
 
@@ -211,6 +224,10 @@ var spartan = {};
     };
 
     spartan.cropImage = function(){
+        if(spartan.processing){
+            return;
+        }
+
         var image_crop_form = $('#image_crop_form');
         var scale = spartan.originalWidth / spartan.imageWidth;
         image_crop_form.find('.x1').val(-parseInt(spartan.image.css('marginLeft'), 10)*scale);
@@ -219,18 +236,20 @@ var spartan = {};
         image_crop_form.find('.height').val(imgHeight * scale);
 
         $('.image-border').removeClass('crop');
+        $('.controls').hide();
+
+        spartan.processing = true;
 
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
 
             if(img.indexOf('uperror') < 0){
                 $('#erase_image_form').find('.img_src').attr('value', img);
-                $('.instruction3').show().siblings().hide();
-
-                //done cropping
-                $('.controls').hide();
 
                 $('.cropped-image').attr('src', img).unbind().load(function(){
+                    spartan.processing = false;
+
+                    $('.instruction3').show().siblings().hide();
                     $('.writing-text').show();
                     $('.overlay').hide();
                     spartan.image.hide();
@@ -244,12 +263,17 @@ var spartan = {};
                 image_crop_form.find('.width, .height, .x1, .y1').val('');
             } else{
                 // error output
+                spartan.processing = false;
                 spartan.cancelWriteImage();
             }               
         });
     };
 
     spartan.cancelWriteImage = function(evt){
+        if(spartan.processing){
+            return false;
+        }
+
         $('.writing-text').hide().children().val('');
         $('.cropped-image').hide();
         $('.image-border').addClass('crop');
@@ -263,12 +287,20 @@ var spartan = {};
     };
 
     spartan.writeImage = function(){
-        spartan.eraseShow();
+        if($('.write1').val() != ''){
+            spartan.eraseShow();
+        } else {
+            spartan.showDownload();
+        }
 
         return false;
     };
 
     spartan.cancelEraseImage = function(evt){
+        if(spartan.processing){
+            return false;
+        }
+
         $('.writing-text').show();
         $('#erase_canvas, #erase_canvas_overlay').hide();
         $('.instruction3').show().siblings().hide();
@@ -286,6 +318,7 @@ var spartan = {};
 
         spartan.ctxOverlay.globalAlpha = .6;
         spartan.ctxOverlay.fillStyle = '#B71D35';
+        spartan.ctxOverlay.strokeStyle = '#FFFFFF';
 
         spartan.ctx.clearRect(0, 0, spartan.canvas.width, spartan.canvas.height);
         spartan.ctxOverlay.clearRect(0, 0, spartan.canvasOverlay.width, spartan.canvasOverlay.height);
@@ -312,10 +345,11 @@ var spartan = {};
         }
 
         var ratio = 600/spartan.canvas.width;
-
+        var brushSize = 10;
+        
         if(spartan.erasing){
             spartan.ctx.beginPath();
-            spartan.ctx.arc(x, y, 15/ratio, 0, Math.PI*2);
+            spartan.ctx.arc(x, y, brushSize/ratio, 0, Math.PI*2);
             spartan.ctx.fill();
 
             spartan.eraseData.push({ x:x*ratio, y:y*ratio });
@@ -324,8 +358,9 @@ var spartan = {};
         if(evt.type == 'mousemove') {
             spartan.ctxOverlay.clearRect(0, 0, spartan.canvasOverlay.width, spartan.canvasOverlay.height);
             spartan.ctxOverlay.beginPath();
-            spartan.ctxOverlay.arc(x, y, 15/ratio, 0, Math.PI*2);
+            spartan.ctxOverlay.arc(x, y, brushSize/ratio, 0, Math.PI*2);
             spartan.ctxOverlay.fill();
+            spartan.ctxOverlay.stroke();
         }
 
         evt.stopPropagation();
@@ -337,29 +372,50 @@ var spartan = {};
         spartan.erasing = false;
     };
 
+    spartan.eraseClear = function(){
+        if(spartan.processing){
+            return;
+        }
+
+        spartan.ctx.clearRect(0, 0, spartan.canvas.width, spartan.canvas.height);
+        spartan.eraseData = [];
+    };
+
     spartan.eraseImage = function(){
+        if(spartan.processing){
+            return;
+        }
+
         var image_erase_form = $('#erase_image_form');
         image_erase_form.find('.text1').val($('.write1').val());
         image_erase_form.find('.values').val(JSON.stringify(spartan.eraseData));
+
+        spartan.processing = true;
 
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
 
             if(img.indexOf('uperror') < 0){
-                $('.instruction5').show().siblings().hide();
-                $('#erase_canvas, #erase_canvas_overlay').hide();
-                $('.writing-text').hide();
+                spartan.processing = false;
                 $('.cropped-image').attr('src', img).unbind();
-                $('.download-file').attr('href', img);
-                $('.title').addClass('end');
+                spartan.showDownload();
             } else{
                 // error output
+                spartan.processing = false;
                 $('.instruction4').show().siblings().hide();
             }               
             
             // we have to remove the values
             image_erase_form.find('.values').val('');
         });
+    };
+
+    spartan.showDownload = function(img){
+        $('.instruction5').show().siblings().hide();
+        $('#erase_canvas, #erase_canvas_overlay').hide();
+        $('.writing-text').hide();
+        $('.download-file').attr('href', $('.cropped-image').attr('src'));
+        $('.title').addClass('end');
     };
 
     spartan.startOver = function(){

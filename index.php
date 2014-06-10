@@ -65,6 +65,7 @@
                 <div class="contents">Now you can erase<br> areas that overlap.</div>
                 <div class="cta next">Next</div>
                 <div class="cancel">Cancel</div>
+                <div class="clear">Clear</div>
                 <div class="clearfix"></div>
             </div>
             <div class="instruction instruction5">
@@ -88,7 +89,6 @@
                 <div class="image-overlay-rocks"></div>
                 <div class="overlay overlay-left"></div>
                 <div class="overlay overlay-right"></div>
-                <canvas id="erase_canvas" class="erase_canvas"></canvas>
                 <div class="image-border"></div>
                 <div class="controls">
                     <div class="zoomIn">+</div>
@@ -97,6 +97,7 @@
                 <div class="writing-text">
                     <textarea rows="6" cols="20" class="write1" placeholder="TYPE YOUR TEXT IN HERE..."></textarea>
                 </div>
+                <canvas id="erase_canvas" class="erase_canvas"></canvas>
                 <canvas id="erase_canvas_overlay" class="erase_canvas_overlay"></canvas>
             </div>
         </div>
