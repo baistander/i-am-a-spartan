@@ -32,8 +32,10 @@ var spartan = {};
         $('.zoomIn').on('click', spartan.zoomIn);
         $('.zoomOut').on('click', spartan.zoomOut);
 
-        $(document).on('touchmove',function(evt){
-            evt.preventDefault();
+        $('.container').on('touchmove',function(evt){
+            if($(this).find('.image-border').hasClass('crop') || $(this).find('#erase_canvas').is(':visible')){
+                evt.preventDefault();
+            }
         });
 
         $('.writing-text input').on('touchstart touchmove touchend', function(evt){
@@ -250,7 +252,7 @@ var spartan = {};
                     spartan.processing = false;
 
                     $('.instruction3').show().siblings().hide();
-                    $('.writing-text').show();
+                    $('.writing-text').show().find('textarea').focus();
                     $('.overlay').hide();
                     spartan.image.hide();
                     $('.image-overlay').hide();
@@ -344,12 +346,12 @@ var spartan = {};
             y = touch.pageY - canvasOffset.top;
         }
 
-        var ratio = 600/spartan.canvas.width;
+        var ratio = spartan.ratio = 600/spartan.canvas.width;
         var brushSize = 10;
-        
+
         if(spartan.erasing){
             spartan.ctx.beginPath();
-            spartan.ctx.arc(x, y, brushSize/ratio, 0, Math.PI*2);
+            spartan.ctx.arc(x, y, brushSize, 0, Math.PI*2);
             spartan.ctx.fill();
 
             spartan.eraseData.push({ x:x*ratio, y:y*ratio });
@@ -358,7 +360,7 @@ var spartan = {};
         if(evt.type == 'mousemove') {
             spartan.ctxOverlay.clearRect(0, 0, spartan.canvasOverlay.width, spartan.canvasOverlay.height);
             spartan.ctxOverlay.beginPath();
-            spartan.ctxOverlay.arc(x, y, brushSize/ratio, 0, Math.PI*2);
+            spartan.ctxOverlay.arc(x, y, brushSize, 0, Math.PI*2);
             spartan.ctxOverlay.fill();
             spartan.ctxOverlay.stroke();
         }
@@ -389,6 +391,7 @@ var spartan = {};
         var image_erase_form = $('#erase_image_form');
         image_erase_form.find('.text1').val($('.write1').val());
         image_erase_form.find('.values').val(JSON.stringify(spartan.eraseData));
+        image_erase_form.find('.size').val(spartan.ratio);
 
         spartan.processing = true;
 
@@ -403,7 +406,7 @@ var spartan = {};
                 // error output
                 spartan.processing = false;
                 $('.instruction4').show().siblings().hide();
-            }               
+            }
             
             // we have to remove the values
             image_erase_form.find('.values').val('');

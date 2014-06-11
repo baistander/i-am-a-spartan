@@ -611,6 +611,10 @@ footer .links a:first-child{
         background-size: 100%;
     }
 
+    .image-border{
+        margin-left:-150px;
+    }
+    
     .overlay-top{
         height: 243px;
     }
@@ -695,6 +699,12 @@ footer .links a:first-child{
 
     footer .bottom{
         margin-top:25px;
+    }
+
+    footer .links{
+        float: none;
+        clear: both;
+        text-align: center;
     }
 }
 

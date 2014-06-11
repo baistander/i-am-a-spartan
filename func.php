@@ -129,7 +129,7 @@ function asidoImg($arr){
 			$data_vals[$i] = array();
 		}
 
-		$brushSize = 10;
+		$brushSize = 10 * $arr['size'];
 
 		for ($i=0; $i<count($values); $i++) {
 			$x = $values[$i]->X;

@@ -32,6 +32,7 @@
 			'tempdir'		=> 'uploads/temp/',
 			'text1'			=> strtoupper($_POST['text1']),
 			'values'		=> strtoupper($_POST['values']),
+			'size'			=> intval($_POST['size']),
 			'img_src'		=> $_POST['img_src'],
 			'erase'			=> true
 		);

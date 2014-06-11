@@ -1,3 +1,7 @@
+<?php
+    $version = 1.0;
+?>
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -15,7 +19,7 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/cropper.css">
-        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/styles.css?v=<?php echo $version; ?>">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -33,8 +37,8 @@
                 <a href="/"><img src="img/logo.jpg" alt="Spartan Logo" /></a>
             </div>
             <div class="links">
-                <a href="#" target="_blank">Gallery</a>
-                <a href="#" target="_blank">Find a Race</a>
+                <a href="http://www.facebook.com/spartanrace" target="_blank">Gallery</a>
+                <a href="http://www.spartan.com/races/races-results/" target="_blank">Find a Race</a>
             </div>
         </header>
 
@@ -107,22 +111,22 @@
                 <div class="sub-contents sub-contents1">
                     <h6>About Our Company</h6>
                     <p>Learn more about our company’s mission, reach out and contact us, and find information about sponsorship opportunities.</p>
-                    <a href="#" target="_blank"><img src="img/button_learn_more.jpg" alt="Learn More" /></a>
+                    <a href="http://www.spartan.com/about-our-company/" target="_blank"><img src="img/button_learn_more.jpg" alt="Learn More" /></a>
                 </div>
                 <div class="sub-contents sub-contents2">
                     <h6>Sign Up for Updates</h6>
                     <p>Sign up to receive our daily Workout of the Day and Food of the Day mailings and register for our Newsletter to get the latest race information and discounts.</p>
-                    <a href="#" target="_blank"><img src="img/button_sign_up.jpg" alt="Learn More" /></a>
+                    <a href="http://www.spartan.com" target="_blank"><img src="img/button_sign_up.jpg" alt="Learn More" /></a>
                 </div>
                 <div class="sub-contents sub-contents3">
                     <h6>Join the Community</h6>
                     <p>Connect with us online to get the latest from Spartan HQ and the rest of the Spartan racing community.</p>
                     <div class="social">
-                        <a href="#" class="twitter" target="_blank">&nbps;</a>
-                        <a href="#" class="facebook" target="_blank">&nbps;</a>
-                        <a href="#" class="pinterest" target="_blank">&nbps;</a>
-                        <a href="#" class="instagram" target="_blank">&nbps;</a>
-                        <a href="#" class="venmo" target="_blank">&nbps;</a>
+                        <a href="https://twitter.com/SpartanRace" class="twitter" target="_blank">&nbps;</a>
+                        <a href="http://www.facebook.com/spartanrace" class="facebook" target="_blank">&nbps;</a>
+                        <a href="http://pinterest.com/spartanrace/" class="pinterest" target="_blank">&nbps;</a>
+                        <a href="http://instagram.com/SpartanRace/" class="instagram" target="_blank">&nbps;</a>
+                        <a href="http://vimeo.com/user8045119" class="venmo" target="_blank">&nbps;</a>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -132,9 +136,9 @@
                     Copyright&copy; 2001-2014 SpartanRace, Inc. All Rights Reserved.
                 </div>
                 <div class="links">
-                    <a href="#" target="_blank">Contact</a>
+                    <a href="http://www.spartanrace.com/contact-new/" target="_blank">Contact</a>
                     <span>|</span>
-                    <a href="#" target="_blank">Sponsors</a>
+                    <a href="http://www.spartan.com/about-our-company/sponsors/" target="_blank">Sponsors</a>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -163,6 +167,7 @@
             <input type="hidden" name="img_src" id="img_src" class="img_src" /> 
             <input type="hidden" name="text1" value="0" class="text1" />
             <input type="hidden" name="values" value="0" class="values" />
+            <input type="hidden" name="size" value="1" class="size" />
         </form>
 
         <iframe id="upload_iframe" class="upload_iframe" name="upload_iframe" src=""></iframe>
@@ -170,7 +175,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+        <script src="js/main.js?v=<?php echo $version; ?>"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
