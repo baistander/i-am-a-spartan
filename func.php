@@ -119,7 +119,7 @@ function asidoImg($arr){
 		//add overlay
 		imagecopy($thumb, $overlay, 0, 0, 0, 0, $thumb_width, $thumb_height);
 
-		imagejpeg($thumb, $filename, 80);
+		imagejpeg($thumb, $filename, 100);
 		imagedestroy($image);
 	} elseif(isset($arr['erase']) && $arr['erase'] === true){
 		$values = json_decode($arr['values']);
@@ -216,10 +216,10 @@ function asidoImg($arr){
 			}
 		}
 
-		imagejpeg($thumb, $filename, 80);
+		imagejpeg($thumb, $filename, 100);
 		imagedestroy($image);
 	} else{
-		imagejpeg($image, $filename, 80);
+		imagejpeg($image, $filename, 100);
 		imagedestroy($image);
 	}
 	

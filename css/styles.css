@@ -13,9 +13,57 @@
     src: url("../fonts/Adobe - AvenirLTStd-Heavy.ttf") format("opentype");
 }
 
+@font-face {
+    font-family: 'Spartan';
+    src:url('../fonts/Spartan.eot?ra9r5l');
+    src:url('../fonts/Spartan.eot?#iefixra9r5l') format('embedded-opentype'),
+        url('../fonts/Spartan.woff?ra9r5l') format('woff'),
+        url('../fonts/Spartan.ttf?ra9r5l') format('truetype'),
+        url('../fonts/Spartan.svg?ra9r5l#Spartan') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'Spartan';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-plus:before {
+    content: "\e600";
+}
+.icon-next:before {
+    content: "\e601";
+}
+.icon-back:before {
+    content: "\e602";
+}
+.icon-down:before {
+    content: "\e603";
+}
+.icon-up:before {
+    content: "\e604";
+}
+.icon-clear:before {
+    content: "\e605";
+}
+.icon-minus:before {
+    content: "\e606";
+}
+
 html, body{
     font-family: Avenir;
     font-size:10px;
+    background: #11110f;
 }
 
 a:hover{
@@ -33,6 +81,7 @@ form{
     position:absolute;
     left:0;
     top:0;
+    display:none;
 }
 
 .background .top {
@@ -51,6 +100,9 @@ header{
     position: relative;
     height: 80px;
     border-bottom: 4px solid #acacac;
+    z-index:400;
+    opacity:0;
+    -webkit-transform: rotateZ(0);
 }
 
 header .logo{
@@ -79,14 +131,43 @@ header .links a{
     margin-left: 25px;
 }
 
+.example2{
+    display:none;
+    top:20px;
+    left:20px;
+    position:relative;
+}
+
 .title{
     position:relative;
     text-align: center;
-    margin-top: 61px;
+    margin-top: 35px;
 }
 
-.title img{
-    max-width:90%;
+.title h1{ 
+    font-family: Veneer;
+    color: #fff;
+    font-size: 1160%;
+    font-weight: normal;
+    margin:0;
+    line-height:1em;
+    -webkit-transform: rotateZ(0);
+    position:relative;
+ }
+
+.title h2{
+    font-family: Avenir-Heavy, sans-serif;
+    color: #e01e3c;
+    text-transform: uppercase;
+    font-size: 260%;
+    margin:0;
+    -webkit-transform: rotateZ(0);
+    position:relative;
+ }
+
+.title .title1 h1,
+.title .title1 h2{
+    opacity:0;
 }
 
 .title .title2{
@@ -105,11 +186,12 @@ header .links a{
     position: relative;
     font-size: 260%;
     color: white;
-    margin-top: 74px;
     width: 600px;
-    margin: 74px auto 0;
+    margin: 31px auto 0;
     line-height: 1.3em;
     z-index:200;
+    opacity:0;
+    -webkit-transform: rotateZ(0);
 }
 
 .instructions .instruction{
@@ -128,6 +210,21 @@ header .links a{
 .instructions .cancel,
 .instructions .clear{
     cursor:pointer;
+    -ms-transition: border-color 0.4s ease;
+    -moz-transition: border-color 0.4s ease;
+    -webkit-transition: border-color 0.4s ease;
+    transition: border-color 0.4s ease;
+}
+
+.instructions .cta.upload{
+    width: 190px;
+    padding-top: 14px;
+    height:36px;
+}
+
+.instructions .cta .upload{
+    position:relative;
+    top:-2px;
 }
 
 .instructions .cta a{
@@ -139,23 +236,37 @@ header .links a{
 }
 
 .instructions .cta:hover,
-.instructions .cancel:hover,
-.instructions .clear:hover{
-    opacity:.5;
+.instructions .cancel:hover{
+    border: 3px solid #ffffff;
 }
 
-.instructions .instruction1 .cta{
-    background: transparent url('../img/button_upload.png') no-repeat;
-    width: 190px;
-    height: 56px;
-    text-indent: -999em;
-    float: right;
+.instructions .cta.active,
+.instructions .cancel.active,
+.instructions .clear.active{
+    text-indent: -9999px;
+    border-color: rgba(255, 255, 255, 0.0);
 }
 
+.instructions .cta.active span,
+.instructions .cancel.active span,
+.instructions .clear.active span{
+    -ms-animation-name: smoke;
+    -moz-animation-name: smoke;
+    -webkit-animation-name: smoke;
+    -o-animation-name: smoke;
+    animation-name: smoke;
+    -ms-animation-duration: 1000ms;
+    -moz-animation-duration: 1000ms;
+    -webkit-animation-duration: 1000ms;
+    -o-animation-duration: 1000ms;
+    animation-duration: 1000ms;
+}
+
+.instructions .cta,
 .instructions .next,
 .instructions .cancel,
 .instructions .facebook,
-.instructions .instagram{
+.instructions .twitter{
     float: right;
     font-size: 96%;
     text-transform: uppercase;
@@ -186,14 +297,17 @@ header .links a{
     position: absolute;
     right: 0;
     top: 83px;
-    background-image: url('../img/button_clear.png');
     width: 131px;
-    text-indent:-999em;
+}
+
+.instructions .clear span{
+    position: relative;
+    top: 2px;
 }
 
 .instruction5 .next,
 .instructions .facebook,
-.instructions .instagram{
+.instructions .twitter{
     width:186px;
 }
 
@@ -201,7 +315,7 @@ header .links a{
     margin-right:12px;
 }
 
-.instructions .instagram{
+.instructions .twitter{
     float:left;
 }
 
@@ -216,12 +330,12 @@ header .links a{
     top:0;
     left:0;
     width:100%;
-    height:449px;
+    height:450px;
     z-index:100;
 }
 
 .overlay-bottom{
-    top: 1049px;
+    top: 1050px;
     left:0;
     width:100%;
     height:50%;
@@ -233,6 +347,8 @@ header .links a{
     overflow:hidden;
     position:relative;
     width:100%;
+    opacity:0;
+    -webkit-transform: rotateZ(0);
 }
 
 .sub-container{
@@ -240,8 +356,9 @@ header .links a{
     height:600px;
     margin:0 auto;
     position:relative;
-    background-image: url('../img/example.jpg');
+    background-image: url('../img/example1.jpg');
     background-size:100%;
+    background-position:20px 20px;
 }
 
 .image-container, .image-border, .erase_canvas, .erase_canvas_overlay{
@@ -269,7 +386,6 @@ header .links a{
     background: transparent url('../img/image-overlay.png') no-repeat;
     width: 600px;
     height: 600px;
-    display:none;
 }
 
 .image-overlay-rocks{
@@ -287,6 +403,9 @@ header .links a{
     position:absolute;
     top:0;
     left:0;
+}
+
+.erase_canvas_overlay{
     display:none;
 }
 
@@ -325,21 +444,17 @@ header .links a{
     left: 50%;
     margin-left: 135px;
     display:none;
+    top: 381px;
+    z-index: 200;
+    margin-left: 208px;
 }
 
 .controls div{
-    width: 40px;
-    height: 40px;
-    background-color: black;
     color: white;
-    border-radius: 20px;
-    line-height: 37px;
-    text-align: center;
-    font-size: 300%;
+    font-size: 400%;
     cursor: pointer;
     float: left;
     margin-left: 10px;
-    border:1px solid white;
 }
 
 .notice{
@@ -357,7 +472,6 @@ header .links a{
     position:absolute;
     top:0;
     left:0;
-    display:none;
 }
 
 .writing-text textarea{
@@ -384,10 +498,46 @@ header .links a{
     overflow: hidden;
 }
 
+.pageload-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    z-index:300;
+}
+ 
+.pageload-overlay.show {
+    visibility: visible;
+}
+ 
+.pageload-overlay svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+ 
+.pageload-overlay svg path {
+    fill: #11110f;
+}
+
+.pageload-overlay .text{
+    color: white;
+    position: absolute;
+    text-transform: uppercase;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    font-size: 200%;
+}
+
 footer{
     position: relative;
     background-color: #121013;
     margin-top: 15px;
+    z-index:400;
+    opacity:0;
 }
 
 footer .contents{
@@ -461,7 +611,7 @@ footer .contents .sub-contents3 .pinterest{
     background-position: -73px 0;
 }
 
-footer .contents .sub-contents3 .instagram{
+footer .contents .sub-contents3 .twitter{
     background-position: -113px 0;
 }
 
@@ -521,6 +671,30 @@ footer .links a:first-child{
     display:none;
 }
 
+@-webkit-keyframes smoke{
+    0%{
+        text-shadow: 5000px 0 0 rgba(153, 153, 153, 1);
+    }
+    90%{
+        text-shadow: 5000px -40px 20px rgba(153, 153, 153, 0);
+    }
+    100%{
+        text-shadow: 5000px 0 0 rgba(0, 0, 0, 0);
+    }
+}
+@-moz-keyframes smoke{
+    0%{
+        text-shadow: 5000px 0 0 rgba(153, 153, 153, 1);
+    }
+    90%{
+        text-shadow: 5000px -40px 20px rgba(153, 153, 153, 0);
+    }
+    100%{
+        text-shadow: 5000px 0 0 rgba(0, 0, 0, 0);
+    }
+}
+
+
 @media only screen and (max-width: 900px){
     html, body{
         font-size:9px;
@@ -576,16 +750,18 @@ footer .links a:first-child{
         max-width: 100%;
     }
 
+    .title h1{
+        font-size:690%;
+    }
+
+    .title h2{
+        font-size:150%;
+    }
+
     .instructions{
         width: 300px;
         font-size: 180%;
         margin-top: 37px;
-    }
-
-    .instructions .instruction1 .cta{
-        width: 95px;
-        background-size: 100%;
-        height: 28px;
     }
 
     .container{
@@ -637,10 +813,11 @@ footer .links a:first-child{
         margin-left: 40px;
     }
 
+    .instructions .cta,
     .instructions .next,
     .instructions .cancel,
     .instructions .facebook,
-    .instructions .instagram{
+    .instructions .twitter{
         width: 72px;
         height: 17px;
         padding-top: 6px;
@@ -650,7 +827,7 @@ footer .links a:first-child{
 
     .instruction5 .next,
     .instructions .facebook,
-    .instructions .instagram{
+    .instructions .twitter{
         width:86px;
     }
 
@@ -745,13 +922,13 @@ footer .links a:first-child{
     .instructions .next,
     .instructions .cancel,
     .instructions .facebook,
-    .instructions .instagram{
+    .instructions .twitter{
         width:66px;
     }
 
     .instruction5 .next,
     .instructions .facebook,
-    .instructions .instagram{
+    .instructions .twitter{
         width:79px;
     }
 }

@@ -20,6 +20,8 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/cropper.css">
         <link rel="stylesheet" href="css/styles.css?v=<?php echo $version; ?>">
+
+        <script src="js/snap.svg-min.js"></script>
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -43,41 +45,52 @@
         </header>
 
         <div class="title">
-            <img class="title1" src="img/header.png" alt="I am a Spartan" />
-            <img class="title2" src="img/header2.png" alt="You are a Spartan" />
+            <div class="title1">
+                <h1>I am a Spartan</h1>
+                <h2>Share Your Spartan Story</h2>
+            </div>
+            <div class="title2">
+                <h1>You are a Spartan</h1>
+                <h2>Now Share Your Spartan Story</h2>
+            </div>
         </div>
 
         <div class="instructions">
             <div class="instruction instruction1">
                 <div class="contents">To Begin,<br> Upload a photo.</div>
-                <div class="cta">Upload</div>
+                <div class="cta upload"><span class="upload">Upload</span> <span class="icon-up"></span></div>
                 <div class="clearfix"></div>
             </div>
             <div class="instruction instruction2">
                 <div class="contents">Now,<br> Crop your photo.</div>
-                <div class="cta next">Next</div>
-                <div class="cancel">Cancel</div>
+                <div class="cta next"><span>Next</span></div>
+                <div class="cancel"><span>Cancel</span></div>
                 <div class="clearfix"></div>
             </div>
             <div class="instruction instruction3">
                 <div class="contents">Now it's time,<br> share your story.</div>
-                <div class="cta next">Next</div>
-                <div class="cancel">Cancel</div>
+                <div class="cta next"><span>Next</span></div>
+                <div class="cancel"><span>Back</span></div>
                 <div class="clearfix"></div>
             </div>
             <div class="instruction instruction4">
                 <div class="contents">Now you can erase<br> areas that overlap.</div>
-                <div class="cta next">Next</div>
-                <div class="cancel">Cancel</div>
-                <div class="clear">Clear</div>
+                <div class="cta next"><span>Next</span></div>
+                <div class="cancel"><span>Back</span></div>
+                <div class="clear">Clear <span class="icon-clear"></span></div>
                 <div class="clearfix"></div>
             </div>
             <div class="instruction instruction5">
-                <div class="cta next"><a class="download-file" href="#" download="SpartanImage">Download</a></div>
-                <div class="cta facebook">Facebook</div>
-                <div class="cta instagram">Instagram</div>
+                <div class="cta next"><a class="download-file" href="#" download="SpartanImage"><span>Download</span></a></div>
+                <div class="cta facebook"><span>Facebook</span></div>
+                <div class="cta twitter"><span>Twitter</span></div>
                 <div class="clearfix"></div>
             </div>
+        </div>
+
+        <div class="controls">
+            <div class="zoomIn"><span class="icon-plus"></span></div>
+            <div class="zoomOut"><span class="icon-minus"></span></div>
         </div>
 
         <div class="overlay overlay-top"></div>
@@ -85,6 +98,7 @@
 
         <div class="container">
             <div class="sub-container">
+                <img class="example2" src="img/example2.jpg" />
                 <div class="image-container">
                     <img class="cropper" src="" />
                     <img class="cropped-image" src="" />
@@ -94,16 +108,19 @@
                 <div class="overlay overlay-left"></div>
                 <div class="overlay overlay-right"></div>
                 <div class="image-border"></div>
-                <div class="controls">
-                    <div class="zoomIn">+</div>
-                    <div class="zoomOut">-</div>
-                </div>
                 <div class="writing-text">
-                    <textarea rows="6" cols="20" class="write1" placeholder="TYPE YOUR TEXT IN HERE..."></textarea>
+                    <textarea rows="6" cols="20" class="write1"></textarea>
                 </div>
                 <canvas id="erase_canvas" class="erase_canvas"></canvas>
                 <canvas id="erase_canvas_overlay" class="erase_canvas_overlay"></canvas>
             </div>
+        </div>
+
+        <div id="loader" class="pageload-overlay" data-opening="M 0,0 c 0,0 63.5,-16.5 80,0 16.5,16.5 0,60 0,60 L 0,60 Z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="none">
+                <path d="M 0,0 c 0,0 -16.5,43.5 0,60 16.5,16.5 80,0 80,0 L 0,60 Z"/>
+            </svg>
+            <div class="text"></div>
         </div>
 
         <footer>
@@ -175,7 +192,19 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
+        <script src="js/classie.js"></script>
+        <script src="js/svgLoader.js"></script>
         <script src="js/main.js?v=<?php echo $version; ?>"></script>
+
+        <div id="fb-root"></div>
+
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1496817263869773&version=v2.0";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
