@@ -31,7 +31,8 @@
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
-    line-height: 1;
+    line-height: 0.7;
+    font-size: 32px;
 
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
@@ -204,6 +205,8 @@ header .links a{
 
 .instructions .contents{
     float: left;
+    -webkit-font-smoothing: antialiased;
+
 }
 
 .instructions .cta,
@@ -224,7 +227,7 @@ header .links a{
 
 .instructions .cta .upload{
     position:relative;
-    top:-2px;
+    top:-4px;
 }
 
 .instructions .cta a{
@@ -273,12 +276,11 @@ header .links a{
     text-align: center;
     border: 3px solid #838383;
     color: #dddddd;
-    line-height: 25px;
+    line-height: 27px;
     width: 145px;
     border-radius: 2px;
     height: 35px;
     padding-top: 13px;
-    letter-spacing: 1px;
     font-family:Avenir-Heavy;
 }
 
@@ -291,7 +293,6 @@ header .links a{
     font-size: 96%;
     text-transform: uppercase;
     color: #dddddd;
-    letter-spacing: 1px;
     font-family:Avenir-Heavy;
     height: 32px;
     position: absolute;
@@ -421,6 +422,8 @@ header .links a{
     display:none;
     width:100%;
 }
+
+.container .crop { cursor: move; }
 
 .container .overlay-left{
     top:0;
