@@ -89,8 +89,8 @@
         </div>
 
         <div class="controls">
-            <div class="zoomIn"><span class="icon-plus"></span></div>
             <div class="zoomOut"><span class="icon-minus"></span></div>
+            <div class="zoomIn"><span class="icon-plus"></span></div>
         </div>
 
         <div class="overlay overlay-top"></div>

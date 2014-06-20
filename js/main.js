@@ -2,7 +2,7 @@ var spartan = {};
 
 (function($){
     var imgWidth, imgHeight;
-    var loaderLeaves = 1200;
+    var loaderLeaves = 1800;
     var overlayAnimationSpeed = 400;
     var demoText = 'What do I do on weekends? Not much.';
 
@@ -170,7 +170,7 @@ var spartan = {};
                     $('.container, header, footer').animate({opacity:1}, 400);
                     $('.background').fadeIn(400, function(){
                     });
-                    $('header').css('top', -84).animate({opacity:1, top:0}, 700, 'easeOutBounce');
+                    $('header').css('top', -84).animate({opacity:1, top:0}, 700, 'easeOutQuad');
 
                     spartan.animateExampleImage();
                 });
