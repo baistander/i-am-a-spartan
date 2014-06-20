@@ -1,11 +1,11 @@
-
+/*
 @font-face {
     font-family: Veneer;
     font-style: normal;
     font-weight: normal;
     src: url("../fonts/Veneer.ttf") format("opentype");
 }
-
+*/
 
 @font-face {
     font-family: 'veneerlowresregular';
@@ -21,11 +21,11 @@
 
 @font-face {
     font-family: 'veneerlowres_tworegular';
-    src: url('veneerlowrestwo-webfont.eot');
-    src: url('veneerlowrestwo-webfont.eot?#iefix') format('embedded-opentype'),
-         url('veneerlowrestwo-webfont.woff') format('woff'),
-         url('veneerlowrestwo-webfont.ttf') format('truetype'),
-         url('veneerlowrestwo-webfont.svg#veneerlowres_tworegular') format('svg');
+    src: url('../fonts/veneerlowrestwo-webfont.eot');
+    src: url('../fonts/veneerlowrestwo-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/veneerlowrestwo-webfont.woff') format('woff'),
+         url('../fonts/veneerlowrestwo-webfont.ttf') format('truetype'),
+         url('../fonts/veneerlowrestwo-webfont.svg#veneerlowres_tworegular') format('svg');
     font-weight: normal;
     font-style: normal;
 
