@@ -9,6 +9,10 @@ var spartan = {};
     spartan.init = function(){
         spartan.image = $('.cropper');
 
+        if(navigator.userAgent.toLowerCase().indexOf('msie') >= 0){
+            $('body').addClass('msie');
+        }
+
         $('.instruction1 .cta').on('click', spartan.selectImage);
         $('#image_upload_form').submit(spartan.uploadImage);
 
@@ -58,7 +62,7 @@ var spartan = {};
         $('.instruction5 .clear').on('click', spartan.downloadClear);
         $('#erase_image_form').submit(spartan.eraseImage);
 
-        var container = $('.image-border').get(0);
+        var container = $('.sub-container').get(0);
         var hammer = Hammer(container, {
             swipe: false,
             hold: false
@@ -70,7 +74,7 @@ var spartan = {};
         $('.zoomOut').on('click', spartan.zoomOut);
 
         $('.container').on('touchmove',function(evt){
-            if($(this).find('.image-border').hasClass('crop') || $(this).find('#erase_canvas').is(':visible')){
+            if($(this).find('.sub-container').hasClass('crop') || $(this).find('#erase_canvas').is(':visible')){
                 evt.preventDefault();
             }
         });
@@ -159,6 +163,16 @@ var spartan = {};
         spartan.loader = new SVGLoader(spartan.overlay.get(0), {speedIn : overlayAnimationSpeed, easingIn : mina.easeinout});
 
         $(window).load(spartan.initialAnimation);
+        $(window).resize(spartan.resize);
+
+        spartan.resize();
+    };
+
+    spartan.resize = function(){
+        var border = $('.image-overlay-border');
+        var borderOffset = border.offset();
+        $('.overlay-top').height(borderOffset.top);
+        $('.overlay-bottom').css('top', borderOffset.top + border.outerHeight());
     };
 
     spartan.initialAnimation = function(){
@@ -342,7 +356,7 @@ var spartan = {};
                     $('.controls').show();
                 });
 
-                $('.image-border').addClass('crop');
+                $('.sub-container').addClass('crop');
             }
             else{
                 // error output
@@ -360,7 +374,7 @@ var spartan = {};
         }
 
         function done(){
-            $('.image-border').removeClass('crop');
+            $('.sub-container').removeClass('crop');
             $('.instruction1').show().siblings().hide();
             $('.controls').hide();
             $('.overlay').hide();
@@ -459,7 +473,7 @@ var spartan = {};
         image_crop_form.find('.width').val(imgWidth * scale);
         image_crop_form.find('.height').val(imgHeight * scale);
 
-        $('.image-border').removeClass('crop');
+        $('.sub-container').removeClass('crop');
         $('.controls').hide();
 
         $('#upload_iframe').unbind().load(function(){
@@ -478,7 +492,7 @@ var spartan = {};
                     spartan.processing = false;
 
                     $('.instruction3').show().siblings().hide();
-                    $('.writing-text').show().find('textarea').focus();
+                    $('.writing-text').show().find('textarea');
                     $('.writing-text').css('opacity', 1);
                     $('.overlay').hide();
                     spartan.image.hide();
@@ -507,7 +521,7 @@ var spartan = {};
         function done(){
             $('.writing-text').hide().children().val('');
             $('.cropped-image').hide();
-            $('.image-border').addClass('crop');
+            $('.sub-container').addClass('crop');
             $('.controls').show();
             $('.instruction2').show().siblings().hide();
             $('.image-overlay').show();
@@ -621,9 +635,7 @@ var spartan = {};
             x = touch.pageX - canvasOffset.left;
             y = touch.pageY - canvasOffset.top;
         }
-
-        console.log(evt);
-
+        
         var ratio = spartan.ratio = 560/spartan.canvas.width;
         var brushSize = 10;
 

@@ -3,10 +3,11 @@
 ?>
 
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie10 lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie10 lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie10 lt-ie9"> <![endif]-->
+<!--[if IE 9]>         <html class="no-js lt-ie10"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -141,11 +142,11 @@
                     <h6>Join the Community</h6>
                     <p>Connect with us online to get the latest from Spartan HQ and the rest of the Spartan racing community.</p>
                     <div class="social">
-                        <a href="https://twitter.com/SpartanRace" class="twitter" target="_blank">&nbps;</a>
-                        <a href="http://www.facebook.com/spartanrace" class="facebook" target="_blank">&nbps;</a>
-                        <a href="http://pinterest.com/spartanrace/" class="pinterest" target="_blank">&nbps;</a>
-                        <a href="http://instagram.com/SpartanRace/" class="instagram" target="_blank">&nbps;</a>
-                        <a href="http://vimeo.com/user8045119" class="venmo" target="_blank">&nbps;</a>
+                        <a href="https://twitter.com/SpartanRace" class="twitter" target="_blank">&nbsp;</a>
+                        <a href="http://www.facebook.com/spartanrace" class="facebook" target="_blank">&nbsp;</a>
+                        <a href="http://pinterest.com/spartanrace/" class="pinterest" target="_blank">&nbsp;</a>
+                        <a href="http://instagram.com/SpartanRace/" class="instagram" target="_blank">&nbsp;</a>
+                        <a href="http://vimeo.com/user8045119" class="venmo" target="_blank">&nbsp;</a>
                     </div>
                 </div>
                 <div class="clearfix"></div>

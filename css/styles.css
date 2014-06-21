@@ -33,12 +33,12 @@
 
 @font-face {
     font-family: Avenir;
-    src: url("../fonts/Adobe - AvenirLTStd-Medium.ttf") format("opentype");
+    src: url("../fonts/Adobe - AvenirLTStd-Medium.woff") format("woff");
 }
 
 @font-face {
     font-family: Avenir-Heavy;
-    src: url("../fonts/Adobe - AvenirLTStd-Heavy.ttf") format("opentype");
+    src: url("../fonts/Adobe - AvenirLTStd-Heavy.woff") format("woff");
 }
 
 @font-face {
@@ -769,11 +769,35 @@ footer .links a:first-child{
     html, body{
         font-size:9px;
     }
+
+    .overlay-top{
+        height:430px;
+    }
+
+    .overlay-bottom{
+        top:1030px;
+    }
+
+    .controls{
+        top:364px;
+    }
 }
 
 @media only screen and (max-width: 800px){
     html, body{
         font-size:8px;
+    }
+
+    .overlay-top{
+        height:408px;
+    }
+
+    .overlay-bottom{
+        top:1008px;
+    }
+
+    .controls{
+        top:350px;
     }
 }
 
@@ -940,7 +964,7 @@ footer .links a:first-child{
         margin-left: 8px;
         margin-top: 3px;
         font-size: 50px;
-        width: 258px;
+        width: 260px;
     }
 
     footer .contents{
