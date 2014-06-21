@@ -614,13 +614,15 @@ var spartan = {};
         }
 
         if(evt.type.indexOf('mouse') >= 0) {
-            x = evt.offsetX;
-            y = evt.offsetY;
+            x = evt.pageX - canvasOffset.left;
+            y = evt.pageY - canvasOffset.top;;
         } else {
             touch = evt.originalEvent.touches[0];
             x = touch.pageX - canvasOffset.left;
             y = touch.pageY - canvasOffset.top;
         }
+
+        console.log(evt);
 
         var ratio = spartan.ratio = 560/spartan.canvas.width;
         var brushSize = 10;
