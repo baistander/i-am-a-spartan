@@ -1009,11 +1009,11 @@ footer .links a:first-child{
     }
 
     .overlay-top{
-        height: 269px;
+        height: 262px;
     }
 
     .overlay-bottom{
-        top:569px;
+        top:562px;
     }
 
     .instructions{
@@ -1040,6 +1040,6 @@ footer .links a:first-child{
 
     .controls{
         margin-left: 58px;
-        top: 226px;
+        top: 220px;
     }
 }
