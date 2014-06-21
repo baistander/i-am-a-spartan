@@ -162,9 +162,10 @@ header .links a{
 
 .example2{
     display:none;
-    top:20px;
-    left:20px;
+    top:0;
+    left:0;
     position:relative;
+    width:100%;
 }
 
 .title{
@@ -247,12 +248,6 @@ header .links a{
     transition: border-color 0.4s ease;
 }
 
-.instructions .cta.upload{
-    width: 190px;
-    padding-top: 14px;
-    height:36px;
-}
-
 .instructions .cta .upload{
     position:relative;
     top:-4px;
@@ -312,6 +307,12 @@ header .links a{
     font-family:Avenir-Heavy;
 }
 
+.instructions .upload{
+    width: 190px;
+    padding-top: 14px;
+    height:36px;
+}
+
 .instructions .cancel{
     margin-right: 3%;
     color: #838383;
@@ -327,6 +328,10 @@ header .links a{
     right: 0;
     top: 83px;
     width: 131px;
+}
+
+.instruction5 .clear{
+    left:0;
 }
 
 .instructions .clear span{
@@ -404,13 +409,12 @@ header .links a{
 }
 
 .sub-container{
-    width:600px;
-    height:600px;
-    margin:0 auto;
+    width:560px;
+    height:560px;
+    margin:20px auto;
     position:relative;
     background-image: url('../img/example1.jpg');
     background-size:100%;
-    background-position:20px 20px;
 }
 
 .image-container, .image-border, .erase_canvas, .erase_canvas_overlay{
@@ -428,16 +432,27 @@ header .links a{
     position:absolute;
     top:0;
     left:50%;
-    margin-left:-300px;
+    margin-left:-280px;
 }
 
 .image-overlay{
     position: absolute;
     top: 0;
     left: 0;
-    background: transparent url('../img/image-overlay.png') no-repeat;
-    width: 600px;
-    height: 600px;
+    background: transparent url('../img/image-overlay-new.png') no-repeat;
+    width: 560px;
+    height: 560px;
+}
+
+.image-overlay-border{
+    border:20px solid white;
+    width:100%;
+    height:100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top:-20px;
+    margin-left:-20px;
 }
 
 .image-overlay-rocks{
@@ -447,8 +462,8 @@ header .links a{
     background: transparent url('../img/image-overlay-rocks.png') no-repeat;
     width: 640px;
     height: 760px;
-    margin-left: -20px;
-    margin-top: -80px;
+    margin-left: -40px;
+    margin-top: -100px;
 }
 
 .erase_canvas, .erase_canvas_overlay{
@@ -477,7 +492,7 @@ header .links a{
 .container .crop { cursor: move; }
 
 .container .overlay-left{
-    top:0;
+    top:-20px;
     left:-50%;
     height:600px;
     width:100%;
@@ -485,7 +500,7 @@ header .links a{
 }
 
 .container .overlay-right{
-    top:0;
+    top:-20px;
     left:50%;
     height:600px;
     width:100%;
@@ -544,8 +559,8 @@ header .links a{
     top:10px;
     font-family:veneerlowres_tworegular;
     text-align: left;
-    margin-left: 42px;
-    margin-top: 25px;
+    margin-left: 20px;
+    margin-top: 5px;
     font-size: 100px;
     width: 516px;
     line-height: .8em;
@@ -763,6 +778,10 @@ footer .links a:first-child{
 }
 
 @media only screen and (max-width: 660px){
+    [class^="icon-"], [class*=" icon-"] {
+        font-size:136%;
+    }
+    
     .background .top{
         margin-top:100px;
     }
@@ -824,48 +843,61 @@ footer .links a:first-child{
     }
 
     .sub-container{
-        width:300px;
-        height:300px;
+        width:280px;
+        height:280px;
     }
 
     .image-overlay{
-        width: 300px;
-        height: 300px;
+        width: 280px;
+        height: 280px;
         background-size: 100%;
+    }
+
+    .image-overlay-border{
+        border: 10px solid white;
+        margin-top: -10px;
+        margin-left: -10px;
     }
 
     .image-overlay-rocks{
         width: 320px;
         height: 380px;
-        margin-left: -10px;
-        margin-top: -40px;
+        margin-left: -20px;
+        margin-top: -50px;
         background-size: 100%;
     }
 
     .image-border{
-        margin-left:-150px;
+        margin-left:-160px;
     }
     
     .overlay-top{
-        height: 243px;
+        height: 289px;
     }
 
     .overlay-bottom{
-        top: 536px;
+        top: 589px;
     }
 
     .container .overlay-left{
         height: 300px;
         margin-left: -150px;
+        margin-top:10px;
     }
 
     .container .overlay-right{
         height: 300px;
         margin-left: 150px;
+        margin-top:10px;
     }
 
     .controls{
-        margin-left: 40px;
+        margin-left: 67px;
+        top:246px;
+    }
+
+    .controls span{
+        font-size:100%;
     }
 
     .instructions .cta,
@@ -886,17 +918,27 @@ footer .links a:first-child{
         width:86px;
     }
 
+    .instructions .upload{
+        width: 95px;
+        height: 18px;
+        padding-top: 7px;
+    }
+
+    .instructions .cta .upload{
+        top:-2px;
+    }
+
     .instructions .clear{
-        top: 41px;
+        top: 47px;
         background-size: 100%;
         height: 16px;
-        width: 66px;
+        width: 70px;
     }
 
     .writing-text .write1{
         top: 5px;
-        margin-left: 21px;
-        margin-top: 12px;
+        margin-left: 8px;
+        margin-top: 3px;
         font-size: 50px;
         width: 258px;
     }
@@ -962,18 +1004,23 @@ footer .links a:first-child{
         width: 350px;
     }
 
+    .title h1{
+        font-size:600%;
+    }
+
     .overlay-top{
-        height: 216px;
+        height: 269px;
     }
 
     .overlay-bottom{
-        top:516px;
+        top:569px;
     }
 
     .instructions{
         width:280px;
     }
 
+    .instructions .cta,
     .instructions .next,
     .instructions .cancel,
     .instructions .facebook,
@@ -985,5 +1032,14 @@ footer .links a:first-child{
     .instructions .facebook,
     .instructions .twitter{
         width:79px;
+    }
+
+    .instructions .upload{
+        width:87px;
+    }
+
+    .controls{
+        margin-left: 58px;
+        top: 226px;
     }
 }

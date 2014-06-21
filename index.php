@@ -84,6 +84,7 @@
                 <div class="cta next"><a class="download-file" href="#" download="SpartanImage"><span>Download</span></a></div>
                 <div class="cta facebook"><span>Facebook</span></div>
                 <div class="cta twitter"><span>Twitter</span></div>
+                <div class="clear"><span class="icon-back"></span> Back</div>
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -104,6 +105,7 @@
                     <img class="cropped-image" src="" />
                 </div>
                 <div class="image-overlay"></div>
+                <div class="image-overlay-border"></div>
                 <div class="image-overlay-rocks"></div>
                 <div class="overlay overlay-left"></div>
                 <div class="overlay overlay-right"></div>

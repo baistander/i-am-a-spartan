@@ -55,6 +55,7 @@ var spartan = {};
             }, 600);
         });
         $('.instruction4 .clear').on('click', spartan.eraseClear);
+        $('.instruction5 .clear').on('click', spartan.downloadClear);
         $('#erase_image_form').submit(spartan.eraseImage);
 
         var container = $('.image-border').get(0);
@@ -106,6 +107,8 @@ var spartan = {};
             if(spartan.animateImageTimer){
                 clearTimeout(spartan.animateImageTimer);
             }
+
+            $('.example2').stop(true, true);
         });
 
         spartan.canvas = $('#erase_canvas').get(0);
@@ -195,7 +198,8 @@ var spartan = {};
 
                     $('.writing-text').animate({'opacity': .5}, 400);
                     
-                    var spots = [{x:353, y:297},{x:353, y:296},{x:353, y:293},{x:355, y:289},{x:356, y:285},{x:357, y:282},{x:358, y:280},{x:358, y:279},{x:359, y:277},{x:359, y:276},{x:359, y:276},{x:360, y:274},{x:362, y:272},{x:365, y:268},{x:367, y:265},{x:368, y:263},{x:369, y:262},{x:369, y:261},{x:370, y:261},{x:370, y:260},{x:371, y:260},{x:372, y:260},{x:372, y:260},{x:373, y:260},{x:374, y:260},{x:375, y:260},{x:376, y:260},{x:378, y:260},{x:379, y:260},{x:380, y:260},{x:380, y:261},{x:380, y:262},{x:379, y:263},{x:378, y:264},{x:378, y:265},{x:376, y:266},{x:375, y:268},{x:374, y:269},{x:374, y:271},{x:373, y:271},{x:372, y:272},{x:372, y:273},{x:371, y:274},{x:371, y:275},{x:370, y:276},{x:369, y:279},{x:369, y:280},{x:367, y:282},{x:366, y:284},{x:366, y:285},{x:365, y:286},{x:365, y:287},{x:365, y:288},{x:364, y:289},{x:364, y:291},{x:364, y:292},{x:363, y:293},{x:363, y:294},{x:364, y:294},{x:365, y:294},{x:366, y:294},{x:367, y:294},{x:369, y:293},{x:372, y:292},{x:375, y:291},{x:378, y:289},{x:381, y:287},{x:384, y:285},{x:386, y:283},{x:387, y:281},{x:388, y:280},{x:389, y:279},{x:389, y:278},{x:389, y:277},{x:389, y:276},{x:389, y:275},{x:389, y:275},{x:389, y:274},{x:390, y:272},{x:392, y:270},{x:394, y:267},{x:396, y:265},{x:397, y:263},{x:399, y:262},{x:399, y:262},{x:399, y:261},{x:400, y:261},{x:401, y:261},{x:402, y:261},{x:404, y:261},{x:406, y:260},{x:408, y:260},{x:411, y:260},{x:412, y:259},{x:414, y:259},{x:414, y:259},{x:415, y:259},{x:416, y:259},{x:417, y:259},{x:420, y:259},{x:421, y:259},{x:421, y:259},{x:422, y:259},{x:423, y:259},{x:423, y:258},{x:424, y:258},{x:425, y:258},{x:426, y:258},{x:428, y:258},{x:429, y:258},{x:430, y:258}];
+                    var spots = [{x:312, y:260},{x:312, y:259},{x:313, y:258},{x:314, y:258},{x:314, y:257},{x:314, y:256},{x:314, y:255},{x:314, y:255},{x:314, y:254},{x:314, y:253},{x:314, y:252},{x:315, y:252},{x:315, y:252},{x:316, y:251},{x:317, y:251},{x:318, y:250},{x:318, y:249},{x:319, y:249},{x:320, y:249},{x:320, y:249},{x:321, y:248},{x:321, y:247},{x:322, y:245},{x:323, y:244},{x:324, y:243},{x:324, y:242},{x:325, y:240},{x:325, y:237},{x:326, y:234},{x:326, y:232},{x:327, y:230},{x:327, y:229},{x:327, y:228},{x:327, y:229},{x:327, y:230},{x:327, y:231},{x:327, y:231},{x:327, y:232},{x:328, y:232},{x:329, y:232},{x:331, y:232},{x:332, y:232},{x:333, y:232},{x:334, y:232},{x:335, y:232},{x:336, y:232},{x:337, y:232},{x:339, y:232},{x:341, y:232},{x:343, y:232},{x:344, y:232},{x:345, y:232},{x:345, y:232},{x:348, y:232},{x:349, y:232},{x:351, y:232},{x:352, y:232},{x:353, y:232},{x:353, y:232},{x:354, y:232},{x:356, y:232},{x:358, y:232},{x:360, y:231},{x:361, y:231},{x:362, y:231},{x:363, y:231},{x:364, y:231},{x:365, y:231},{x:365, y:230},{x:368, y:229},{x:371, y:229},{x:374, y:228},{x:376, y:227},{x:377, y:227},{x:378, y:227},{x:377, y:227},{x:374, y:227},{x:369, y:229},{x:365, y:232},{x:362, y:233},{x:359, y:235},{x:358, y:236},{x:356, y:237},{x:355, y:238},{x:354, y:238},{x:352, y:239},{x:349, y:240},{x:347, y:241},{x:345, y:243},{x:343, y:243},{x:342, y:244},{x:341, y:244},{x:340, y:244},{x:339, y:245},{x:338, y:245},{x:335, y:246},{x:333, y:247},{x:332, y:249},{x:333, y:249},{x:336, y:249},{x:340, y:249},{x:344, y:249},{x:347, y:249},{x:348, y:249},{x:349, y:249},{x:349, y:249},{x:351, y:249},{x:355, y:249},{x:359, y:247},{x:362, y:247},{x:364, y:246},{x:370, y:246},{x:375, y:246}];
+                    var ratio = 560/$('.sub-container').width();
                     var spotIndex = 0;
 
                     $('.erase_canvas').show();
@@ -206,17 +210,19 @@ var spartan = {};
 
                     spartan.eraseInterval = setInterval(function(){
                         if(spots[spotIndex]){
-                            spartan.eraseSpot(spots[spotIndex].x, spots[spotIndex].y);
+                            spartan.eraseSpot(spots[spotIndex].x/ratio, spots[spotIndex].y/ratio, 10/ratio);
                             spotIndex++;
                         } else {
                             clearInterval(spartan.eraseInterval);
                             $('.example2').fadeIn();
+                            $('.image-overlay').fadeOut();
                             $('.writing-text').animate({'opacity': 0}, 400, function(){
                                 $('.writing-text').attr('style', '').hide();
                                 spartan.animateImageTimer = setTimeout(function(){
                                     $('.example2').fadeOut(400, function(){
                                         spartan.animateExampleImage();
                                     });
+                                    $('.image-overlay').fadeIn();
                                 }, 1500);
                             });
                             $('.erase_canvas').fadeOut();
@@ -298,6 +304,7 @@ var spartan = {};
                     $('.erase_canvas').stop(true, true).hide();
                     $('.writing-text').stop(true, true).hide().find('textarea').attr('placeholder', 'TYPE YOUR TEXT IN HERE...').val('');
                     $('.example2').stop(true, true).hide();
+                    $('.image-overlay').stop(true, true).hide();
                     $('.image-overlay-rocks').hide();
 
                     imgWidth = $parent.width();
@@ -308,21 +315,21 @@ var spartan = {};
                     spartan.imageRatio = ratio;
 
                     if(ratio < aspectRatio) {
-                        var newWidth = imgWidth*1.1;
+                        var newWidth = imgWidth*1.15;
 
                         $this.width(newWidth).css({
-                            marginLeft : -newWidth * 0.05,
-                            marginTop : -newWidth*(aspectRatio/ratio - 1)/2,
+                            marginLeft : -imgWidth * 0.075,
+                            marginTop : -(newWidth*aspectRatio/ratio - imgHeight)/2,
                         });
 
                         spartan.imageWidth = newWidth;
                         spartan.imageHeight = newWidth*aspectRatio/ratio;
                     } else {
-                        var newHeight = imgHeight*1.1;
+                        var newHeight = imgHeight*1.15;
 
                         $this.height(newHeight).css({
-                            marginTop : -newHeight * 0.05,
-                            marginLeft : -newHeight*(ratio/aspectRatio - 1)/2,
+                            marginTop : -imgHeight * 0.075,
+                            marginLeft : -(newHeight*ratio/aspectRatio - imgWidth)/2,
                         });
 
                         spartan.imageWidth = newHeight*ratio/aspectRatio;
@@ -522,9 +529,11 @@ var spartan = {};
         if($('.write1').val() != ''){
             text = 'Writing Text...';
             callback = spartan.eraseShow;
+            spartan.skippedWriting = false;
         } else {
             text = 'Finishing Image!!!';
             callback = spartan.showDownload;
+            spartan.skippedWriting = true;
         }
 
         spartan.buttonClick(this);
@@ -586,9 +595,12 @@ var spartan = {};
         spartan.eraseData = [];
     };
 
-    spartan.eraseSpot = function(x, y){
+    spartan.eraseSpot = function(x, y, size){
+        if(!size){
+            size = 10;
+        }
         spartan.ctx.beginPath();
-        spartan.ctx.arc(x, y, 10, 0, Math.PI*2);
+        spartan.ctx.arc(x, y, size, 0, Math.PI*2);
         spartan.ctx.fill();
     };
 
@@ -608,7 +620,7 @@ var spartan = {};
             y = touch.pageY - canvasOffset.top;
         }
 
-        var ratio = spartan.ratio = 600/spartan.canvas.width;
+        var ratio = spartan.ratio = 560/spartan.canvas.width;
         var brushSize = 10;
 
         if(spartan.erasing){
@@ -677,6 +689,37 @@ var spartan = {};
         });
     };
 
+    spartan.downloadClear = function(evt){
+        if(spartan.processing){
+            return false;
+        }
+
+        function done(){
+            if(!spartan.skippedWriting){
+                $('.instruction4').show().siblings().hide();
+                $('.writing-text').show().css('opacity', 1);
+                $('#erase_canvas, #erase_canvas_overlay').show();
+                $('.title').removeClass('end');
+                spartan.ctx.clearRect(0, 0, spartan.canvas.width, spartan.canvas.height);
+                spartan.eraseData = [];
+
+                $('.cropped-image').attr('src', $('#erase_image_form').find('.img_src').attr('value')).unbind();
+            } else {
+                $('.writing-text').show().find('textarea').val('');
+                $('.writing-text').css('opacity', 1);
+                $('.instruction3').show().siblings().hide();
+            }
+        }
+
+        if(evt){
+            spartan.showLoader(done);
+        } else {
+            done();
+        }
+
+        return false;
+    };
+
     spartan.showDownload = function(img){
         $('.instruction5').show().siblings().hide();
         $('#erase_canvas, #erase_canvas_overlay').hide();
@@ -686,8 +729,7 @@ var spartan = {};
     };
 
     spartan.startOver = function(){
-        $('.title').removeClass('end');
-
+        spartan.downloadClear();
         spartan.cancelWriteImage();
         spartan.cancelCropImage();
 

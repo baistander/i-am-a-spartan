@@ -94,8 +94,8 @@ function asidoImg($arr){
 	}
 
 	$filename = $arr['new_uploadfile'];
-	$thumb_width = 600;
-	$thumb_height = 600;
+	$thumb_width = 560;
+	$thumb_height = 560;
 
 	// fit and add white frame										
 	if(isset($arr['crop']) && $arr['crop'] === true){
@@ -111,7 +111,7 @@ function asidoImg($arr){
 		}
 
 		$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
-		$overlay = imagecreatefrompng('img/image-overlay.png');
+		$overlay = imagecreatefrompng('img/image-overlay-new.png');
 
 		// Resize and crop
 		imagecopyresampled($thumb, $image, 0 - ($new_width - $thumb_width) / 2, 0 - ($new_height - $thumb_height) / 2, $x, $y, $new_width, $new_height, $width, $height);
@@ -163,12 +163,14 @@ function asidoImg($arr){
 		$texts1 = explode("\n", $arr['text1']);
 		$texts2 = array();
 		$texts2Count = 0;
+		$lines = 0;
 
-		for($i=0; $i<count($texts1); $i++){
+		for($i=0; $i<count($texts1) && $lines < 6; $i++){
 			$text = $texts1[$i];
 			$text_data = imagettfbbox(76, 0, $font_path, $text);
 			$split_text = false;
 			$split_index = 0;
+			$lines++;
 
 			if($text_data[2] > 520){
 				$split_text = true;
@@ -202,14 +204,14 @@ function asidoImg($arr){
 
 		// Print Text On Image
 		for($i=0; $i<count($texts2); $i++){
-			imagettftext($thumb, 76, 0, 44, 35+78+$i*80, $white, $font_path, $texts2[$i]);
+			imagettftext($thumb, 76, 0, 21, 14+78+$i*80, $white, $font_path, $texts2[$i]);
 		}
 
 		// Erase part of image
 		$eraseSize = 1;
 
 		for ($i=0; $i<$thumb_width-$eraseSize; $i++) {
-			for($j=0; $j<$thumb_height*2/3; $j++){
+			for($j=0; $j<$thumb_height; $j++){
 				if(isset($data_vals[$i][$j])){
 					imagecopy($thumb, $image, $i, $j, $i, $j, $eraseSize, $eraseSize);
 				}
