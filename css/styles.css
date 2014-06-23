@@ -602,6 +602,53 @@ header .links a{
     font-family: Avenir-Heavy;
 }
 
+.pageload-overlay .error-button{
+    display:none;
+}
+
+.pageload-overlay p{
+    margin:0;
+    margin-top:-1em;
+}
+
+.pageload-overlay .error-button{
+    display:block;
+    font-size: 96%;
+    text-transform: uppercase;
+    text-align: center;
+    border: 3px solid #838383;
+    color: #dddddd;
+    line-height: 27px;
+    width: 145px;
+    border-radius: 2px;
+    height: 35px;
+    padding-top: 13px;
+    font-family:Avenir-Heavy;
+    cursor:pointer;
+    margin:20px auto;
+    -ms-transition: border-color 0.4s ease;
+    -moz-transition: border-color 0.4s ease;
+    -webkit-transition: border-color 0.4s ease;
+    transition: border-color 0.4s ease;
+}
+
+.pageload-overlay .error-button:hover{
+    border: 3px solid #ffffff;
+}
+
+.pageload-overlay .error-button span{
+    -ms-animation-name: smoke;
+    -moz-animation-name: smoke;
+    -webkit-animation-name: smoke;
+    -o-animation-name: smoke;
+    animation-name: smoke;
+    -ms-animation-duration: 1000ms;
+    -moz-animation-duration: 1000ms;
+    -webkit-animation-duration: 1000ms;
+    -o-animation-duration: 1000ms;
+    animation-duration: 1000ms;
+}
+
 footer{
     position: relative;
     background-color: #121013;
@@ -965,6 +1012,15 @@ footer .links a:first-child{
         margin-top: 3px;
         font-size: 50px;
         width: 260px;
+    }
+
+    .pageload-overlay .text{
+        width:90%;
+        left:5%;
+    }
+
+    .pageload-overlay p{
+        margin-top:-2em;
     }
 
     footer .contents{

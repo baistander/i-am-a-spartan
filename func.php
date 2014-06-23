@@ -50,7 +50,7 @@ function uploadImg($arr){
 			exit;
 		}
 	} else {
-		echo '<p class="uperror">Please upload again. Maximum filesize is 1.3MB.</p>';
+		echo '<p class="uperror">Please upload again. Maximum file size exceeded.</p>';
 		exit;
 	}
 }

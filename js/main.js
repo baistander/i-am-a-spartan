@@ -162,6 +162,8 @@ var spartan = {};
         spartan.overlay = $('#loader');
         spartan.loader = new SVGLoader(spartan.overlay.get(0), {speedIn : overlayAnimationSpeed, easingIn : mina.easeinout});
 
+        spartan.overlay.on('click', '.error-button', spartan.hideLoader);
+
         $(window).load(spartan.initialAnimation);
         $(window).resize(spartan.resize);
 
@@ -287,6 +289,10 @@ var spartan = {};
         spartan.loader.hide();
     };
 
+    spartan.showError = function(msg){
+        spartan.overlay.find('.text').html(msg + '<div class="error-button"><span>Got it</span></div>');
+    };
+
     spartan.uploadImage = function(){
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
@@ -361,6 +367,7 @@ var spartan = {};
             else{
                 // error output
                 spartan.processing = false;
+                spartan.showError(img);
                 spartan.cancelCropImage();
             }
             
@@ -479,37 +486,31 @@ var spartan = {};
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
 
-            if(img.indexOf('uperror') < 0){
-                $('#erase_image_form').find('.img_src').attr('value', img);
+            $('#erase_image_form').find('.img_src').attr('value', img);
 
-                $('.cropped-image').attr('src', img).unbind().load(function(){
-                    var cTime = (new Date()).getTime();
-                    if(cTime - spartan.loaderTime < loaderLeaves){
-                        setTimeout(spartan.hideLoader, loaderLeaves - (cTime - spartan.loaderTime));
-                    } else {
-                        setTimeout(spartan.hideLoader, 200);
-                    }
-                    spartan.processing = false;
-
-                    $('.instruction3').show().siblings().hide();
-                    $('.writing-text').show().find('textarea');
-                    $('.writing-text').css('opacity', 1);
-                    $('.overlay').hide();
-                    spartan.image.hide();
-                    $('.image-overlay').hide();
-                    $('.image-overlay-rocks').show();
-
-                    var $this = $(this);
-                    $this.show();
-                });
-
-                // we have to remove the values
-                image_crop_form.find('.width, .height, .x1, .y1').val('');
-            } else{
-                // error output
+            $('.cropped-image').attr('src', img).unbind().load(function(){
+                var cTime = (new Date()).getTime();
+                if(cTime - spartan.loaderTime < loaderLeaves){
+                    setTimeout(spartan.hideLoader, loaderLeaves - (cTime - spartan.loaderTime));
+                } else {
+                    setTimeout(spartan.hideLoader, 200);
+                }
                 spartan.processing = false;
-                spartan.cancelWriteImage();
-            }               
+
+                $('.instruction3').show().siblings().hide();
+                $('.writing-text').show().find('textarea');
+                $('.writing-text').css('opacity', 1);
+                $('.overlay').hide();
+                spartan.image.hide();
+                $('.image-overlay').hide();
+                $('.image-overlay-rocks').show();
+
+                var $this = $(this);
+                $this.show();
+            });
+
+            // we have to remove the values
+            image_crop_form.find('.width, .height, .x1, .y1').val('');            
         });
     };
 
@@ -683,22 +684,16 @@ var spartan = {};
         $('#upload_iframe').unbind().load(function(){
             var img = $('#upload_iframe').contents().find('body').html();
 
-            if(img.indexOf('uperror') < 0){
-                var cTime = (new Date()).getTime();
-                if(cTime - spartan.loaderTime < loaderLeaves){
-                    setTimeout(spartan.hideLoader, loaderLeaves - (cTime - spartan.loaderTime));
-                } else {
-                    setTimeout(spartan.hideLoader, 200);
-                }
-                spartan.processing = false;
-
-                $('.cropped-image').attr('src', img).unbind();
-                spartan.showDownload();
-            } else{
-                // error output
-                spartan.processing = false;
-                $('.instruction4').show().siblings().hide();
+            var cTime = (new Date()).getTime();
+            if(cTime - spartan.loaderTime < loaderLeaves){
+                setTimeout(spartan.hideLoader, loaderLeaves - (cTime - spartan.loaderTime));
+            } else {
+                setTimeout(spartan.hideLoader, 200);
             }
+            spartan.processing = false;
+
+            $('.cropped-image').attr('src', img).unbind();
+            spartan.showDownload();
             
             // we have to remove the values
             image_erase_form.find('.values').val('');
