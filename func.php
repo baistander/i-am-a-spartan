@@ -221,6 +221,22 @@ function asidoImg($arr){
 		imagejpeg($thumb, $filename, 100);
 		imagedestroy($image);
 	} else{
+		$exif = exif_read_data($arr['temp_uploadfile']);
+
+		if(!empty($exif['Orientation'])) {
+		    switch($exif['Orientation']) {
+		        case 8:
+		            $image = imagerotate($image, 90, 0);
+		            break;
+		        case 3:
+		            $image = imagerotate($image, 180, 0);
+		            break;
+		        case 6:
+		            $image = imagerotate($image, -90, 0);
+		            break;
+		    }
+		}
+
 		imagejpeg($image, $filename, 100);
 		imagedestroy($image);
 	}

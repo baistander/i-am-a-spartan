@@ -442,6 +442,7 @@ header .links a{
     background: transparent url('../img/image-overlay-new.png') no-repeat;
     width: 560px;
     height: 560px;
+    display:none;
 }
 
 .image-overlay-border{

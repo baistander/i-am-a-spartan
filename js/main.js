@@ -114,6 +114,7 @@ var spartan = {};
 
             $('.example2').stop(true);
             $('.writing-text').stop(true);
+            $('.image-overlay').stop(true);
         });
 
         spartan.canvas = $('#erase_canvas').get(0);
@@ -206,51 +207,55 @@ var spartan = {};
         $('.image-overlay').show();
         $('.writing-text').css('opacity', '');
 
-        spartan.animateImageTimer = setTimeout(function(){
-            spartan.writingInterval = setInterval(function(){
-                index++;
-                textArea.val(demoText.substring(0, index));
+        $('.image-overlay').attr('style', '').hide().delay(1500).fadeIn(600, function(){
+            spartan.animateImageTimer = setTimeout(function(){
+                spartan.writingInterval = setInterval(function(){
+                    index++;
+                    textArea.val(demoText.substring(0, index));
 
-                if(demoText.length <= index){
-                    clearInterval(spartan.writingInterval);
+                    if(demoText.length <= index){
+                        clearInterval(spartan.writingInterval);
 
-                    $('.writing-text').animate({'opacity': .5}, 400, function(){
-                        var spots = [{x:312, y:260},{x:312, y:259},{x:313, y:258},{x:314, y:258},{x:314, y:257},{x:314, y:256},{x:314, y:255},{x:314, y:255},{x:314, y:254},{x:314, y:253},{x:314, y:252},{x:315, y:252},{x:315, y:252},{x:316, y:251},{x:317, y:251},{x:318, y:250},{x:318, y:249},{x:319, y:249},{x:320, y:249},{x:320, y:249},{x:321, y:248},{x:321, y:247},{x:322, y:245},{x:323, y:244},{x:324, y:243},{x:324, y:242},{x:325, y:240},{x:325, y:237},{x:326, y:234},{x:326, y:232},{x:327, y:230},{x:327, y:229},{x:327, y:228},{x:327, y:229},{x:327, y:230},{x:327, y:231},{x:327, y:231},{x:327, y:232},{x:328, y:232},{x:329, y:232},{x:331, y:232},{x:332, y:232},{x:333, y:232},{x:334, y:232},{x:335, y:232},{x:336, y:232},{x:337, y:232},{x:339, y:232},{x:341, y:232},{x:343, y:232},{x:344, y:232},{x:345, y:232},{x:345, y:232},{x:348, y:232},{x:349, y:232},{x:351, y:232},{x:352, y:232},{x:353, y:232},{x:353, y:232},{x:354, y:232},{x:356, y:232},{x:358, y:232},{x:360, y:231},{x:361, y:231},{x:362, y:231},{x:363, y:231},{x:364, y:231},{x:365, y:231},{x:365, y:230},{x:368, y:229},{x:371, y:229},{x:374, y:228},{x:376, y:227},{x:377, y:227},{x:378, y:227},{x:377, y:227},{x:374, y:227},{x:369, y:229},{x:365, y:232},{x:362, y:233},{x:359, y:235},{x:358, y:236},{x:356, y:237},{x:355, y:238},{x:354, y:238},{x:352, y:239},{x:349, y:240},{x:347, y:241},{x:345, y:243},{x:343, y:243},{x:342, y:244},{x:341, y:244},{x:340, y:244},{x:339, y:245},{x:338, y:245},{x:335, y:246},{x:333, y:247},{x:332, y:249},{x:333, y:249},{x:336, y:249},{x:340, y:249},{x:344, y:249},{x:347, y:249},{x:348, y:249},{x:349, y:249},{x:349, y:249},{x:351, y:249},{x:355, y:249},{x:359, y:247},{x:362, y:247},{x:364, y:246},{x:370, y:246},{x:375, y:246}];
-                        var ratio = 560/$('.sub-container').width();
-                        var spotIndex = 0;
+                        spartan.animateImageTimer = setTimeout(function(){
+                            $('.writing-text').animate({'opacity': .5}, 400, function(){
+                                var spots = [{x:312, y:260},{x:312, y:259},{x:313, y:258},{x:314, y:258},{x:314, y:257},{x:314, y:256},{x:314, y:255},{x:314, y:255},{x:314, y:254},{x:314, y:253},{x:314, y:252},{x:315, y:252},{x:315, y:252},{x:316, y:251},{x:317, y:251},{x:318, y:250},{x:318, y:249},{x:319, y:249},{x:320, y:249},{x:320, y:249},{x:321, y:248},{x:321, y:247},{x:322, y:245},{x:323, y:244},{x:324, y:243},{x:324, y:242},{x:325, y:240},{x:325, y:237},{x:326, y:234},{x:326, y:232},{x:327, y:230},{x:327, y:229},{x:327, y:228},{x:327, y:229},{x:327, y:230},{x:327, y:231},{x:327, y:231},{x:327, y:232},{x:328, y:232},{x:329, y:232},{x:331, y:232},{x:332, y:232},{x:333, y:232},{x:334, y:232},{x:335, y:232},{x:336, y:232},{x:337, y:232},{x:339, y:232},{x:341, y:232},{x:343, y:232},{x:344, y:232},{x:345, y:232},{x:345, y:232},{x:348, y:232},{x:349, y:232},{x:351, y:232},{x:352, y:232},{x:353, y:232},{x:353, y:232},{x:354, y:232},{x:356, y:232},{x:358, y:232},{x:360, y:231},{x:361, y:231},{x:362, y:231},{x:363, y:231},{x:364, y:231},{x:365, y:231},{x:365, y:230},{x:368, y:229},{x:371, y:229},{x:374, y:228},{x:376, y:227},{x:377, y:227},{x:378, y:227},{x:377, y:227},{x:374, y:227},{x:369, y:229},{x:365, y:232},{x:362, y:233},{x:359, y:235},{x:358, y:236},{x:356, y:237},{x:355, y:238},{x:354, y:238},{x:352, y:239},{x:349, y:240},{x:347, y:241},{x:345, y:243},{x:343, y:243},{x:342, y:244},{x:341, y:244},{x:340, y:244},{x:339, y:245},{x:338, y:245},{x:335, y:246},{x:333, y:247},{x:332, y:249},{x:333, y:249},{x:336, y:249},{x:340, y:249},{x:344, y:249},{x:347, y:249},{x:348, y:249},{x:349, y:249},{x:349, y:249},{x:351, y:249},{x:355, y:249},{x:359, y:247},{x:362, y:247},{x:364, y:246},{x:370, y:246},{x:375, y:246}];
+                                var ratio = 560/$('.sub-container').width();
+                                var spotIndex = 0;
 
-                        $('.erase_canvas').show();
-                        spartan.canvas.width = $('.sub-container').width();
-                        spartan.canvas.height = $('.sub-container').height();
-                        spartan.ctx.fillStyle = '#B71D35';
-                        spartan.ctx.clearRect(0, 0, spartan.canvas.width, spartan.canvas.height);
+                                $('.erase_canvas').show();
+                                spartan.canvas.width = $('.sub-container').width();
+                                spartan.canvas.height = $('.sub-container').height();
+                                spartan.ctx.fillStyle = '#B71D35';
+                                spartan.ctx.clearRect(0, 0, spartan.canvas.width, spartan.canvas.height);
 
-                        spartan.eraseInterval = setInterval(function(){
-                            if(spots[spotIndex]){
-                                spartan.eraseSpot(spots[spotIndex].x/ratio, spots[spotIndex].y/ratio, 10/ratio);
-                                spotIndex++;
-                            } else {
-                                clearInterval(spartan.eraseInterval);
-                                $('.example2').fadeIn();
-                                $('.image-overlay').fadeOut();
-                                $('.writing-text').animate({'opacity': 0}, 400, function(){
-                                    $('.writing-text').attr('style', '').hide();
-                                    spartan.animateImageTimer = setTimeout(function(){
-                                        $('.example2').fadeOut(400, function(){
-                                            spartan.animateExampleImage();
-                                        });
-                                        $('.image-overlay').fadeIn();
-                                    }, 1500);
-                                });
-                                $('.erase_canvas').fadeOut();
-                            }
-                        }, 20);
-                    });
+                                spartan.eraseInterval = setInterval(function(){
+                                    if(spots[spotIndex]){
+                                        spartan.eraseSpot(spots[spotIndex].x/ratio, spots[spotIndex].y/ratio, 10/ratio);
+                                        spotIndex++;
+                                    } else {
+                                        clearInterval(spartan.eraseInterval);
 
-                    // spartan.eraseShow();
-                }
-            }, 70);
-        }, 700);
+                                        spartan.animateImageTimer = setTimeout(function(){
+                                            $('.example2').fadeIn();
+                                            $('.image-overlay').fadeOut();
+                                            $('.writing-text').animate({'opacity': 0}, 400, function(){
+                                                $('.writing-text').attr('style', '').hide();
+                                                spartan.animateImageTimer = setTimeout(function(){
+                                                    $('.example2').fadeOut(400, function(){
+                                                        spartan.animateExampleImage();
+                                                    });
+                                                }, 2250);
+                                            });
+                                            $('.erase_canvas').fadeOut();
+                                        }, 1500);
+                                    }
+                                }, 20);
+                            });
+                        }, 1000);
+                    }
+                }, 70);
+            }, 800);
+    });
     };
 
     spartan.buttonClick = function(el){
